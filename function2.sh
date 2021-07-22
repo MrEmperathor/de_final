@@ -4,7 +4,7 @@ deee=$(echo "$0" | cut -d"/" -f5)
 if [[ "$deee" == "de3" || "$deee" == "se3" ]]; then
     includeRuta='/var/www/html/panel2/panel/inc/include/';
     ruta_Home=$(pwd)
-    BLANCOF='\033[47m'; RED='\033[0;31m'; REDCLARO='\033[1;31m'; AZUL='\033[0;34m'; AZULCLARO='\033[1;34m'; VERDE='\033[0;32m'; VERDECLARO='\033[1;32m'; CYAN='\033[0;36m'; CYANCLARO='\033[1;36m'; PURPURA='\033[0;35m'; PURPURAC='\033[1;35m'; CAFE='\033[1;37m'; AMARILLO='\033[1;33m'; NC='\033[0m'; RFembed="/var/www/html/panel2/panel/inc/include/fembed.php"; RNetu="/var/www/html/panel2/panel/inc/include/netu4.php"; SFembed="/var/www/html/panel2/panel/inc/include/fembed/./fembed_final.php"; SNetu="/var/www/html/panel2/panel/inc/include/./netu4.php"; Rvery="/var/www/html/panel2/panel/inc/include/./very.php"; SJetload="/var/www/html/panel2/panel/inc/include/./jetload.php"; Uptoboxx="/var/www/html/panel2/panel/inc/include/./uptobox.php"; Sgoun="/var/www/html/panel2/panel/inc/include/./gounlimited.php"; Sclicknupload="/var/www/html/panel2/panel/inc/include/./clicknupload.php"; Sdropapk="/var/www/html/panel2/panel/inc/include/./dropapk.php"; Sprostream="/var/www/html/panel2/panel/inc/include/./prostream.php"; Supstream="/var/www/html/panel2/panel/inc/include/./upstream.php"; Smystream="/var/www/html/panel2/panel/inc/include/./mystream.php"; SSHORT="/var/www/html/panel2/panel/inc/include/./short.php"; SOUO="/var/www/html/panel2/panel/inc/include/./ouo.php"; Rinsertar="/var/www/html/panel2/panel/inc/xion/./insertar.php"; Ragregar="/var/www/html/panel2/panel/inc/xion/./agregar.php"; Rserialize="/var/www/html/panel2/panel/inc/include/./serializar2.php"; CONFIG="/usr/local/bin/config2.ini"; CONFIGGLOBAL="/var/www/html/panel2/panel/inc/config.php"; barraAzul="\033[0;
+    BLANCOF='\033[47m'; RED='\033[0;31m'; REDCLARO='\033[1;31m'; AZUL='\033[0;34m'; AZULCLARO='\033[1;34m'; VERDE='\033[0;32m'; VERDECLARO='\033[1;32m'; CYAN='\033[0;36m'; CYANCLARO='\033[1;36m'; PURPURA='\033[0;35m'; PURPURAC='\033[1;35m'; CAFE='\033[1;37m'; AMARILLO='\033[1;33m'; NC='\033[0m'; RFembed="/var/www/html/panel2/panel/inc/include/fembed.php"; RNetu="/var/www/html/panel2/panel/inc/include/netu4.php"; SFembed="/var/www/html/panel2/panel/inc/include/fembed/./fembed_final.php"; SNetu="/var/www/html/panel2/panel/inc/include/./netu4.php"; Rvery="/var/www/html/panel2/panel/inc/include/./very.php"; SJetload="/var/www/html/panel2/panel/inc/include/./jetload.php"; Uptoboxx="/var/www/html/panel2/panel/inc/include/./uptobox.php"; Uptoboxmi="/var/www/html/panel2/panel/inc/include/./uptoboxmi.php";Sgoun="/var/www/html/panel2/panel/inc/include/./gounlimited.php"; Sclicknupload="/var/www/html/panel2/panel/inc/include/./clicknupload.php"; Sdropapk="/var/www/html/panel2/panel/inc/include/./dropapk.php"; Sprostream="/var/www/html/panel2/panel/inc/include/./prostream.php"; Supstream="/var/www/html/panel2/panel/inc/include/./upstream.php"; Smystream="/var/www/html/panel2/panel/inc/include/./mystream.php"; SSHORT="/var/www/html/panel2/panel/inc/include/./short.php"; SOUO="/var/www/html/panel2/panel/inc/include/./ouo.php"; Rinsertar="/var/www/html/panel2/panel/inc/xion/./insertar.php"; Ragregar="/var/www/html/panel2/panel/inc/xion/./agregar.php"; Rserialize="/var/www/html/panel2/panel/inc/include/./serializar2.php"; CONFIG="/usr/local/bin/config2.ini"; CONFIGGLOBAL="/var/www/html/panel2/panel/inc/config.php"; barraAzul="\033[0;
 34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"; ruta_drive=$(pwd)
 
 else
@@ -13,6 +13,18 @@ else
     BLANCOF='\033[47m'; RED='\033[0;31m'; REDCLARO='\033[1;31m'; AZUL='\033[0;34m'; AZULCLARO='\033[1;34m'; VERDE='\033[0;32m'; VERDECLARO='\033[1;32m'; CYAN='\033[0;36m'; CYANCLARO='\033[1;36m'; PURPURA='\033[0;35m'; PURPURAC='\033[1;35m'; CAFE='\033[1;37m'; AMARILLO='\033[1;33m'; NC='\033[0m'; RFembed="/var/www/html/panel/inc/include/fembed.php"; RNetu="/var/www/html/panel/inc/include/netu1.php"; SFembed="/var/www/html/panel/inc/include/fembed/./fembed_final.php"; SNetu="/var/www/html/panel/inc/include/./netu4.php"; Rvery="/var/www/html/panel/inc/include/./very.php"; SJetload="/var/www/html/panel/inc/include/./jetload.php"; Uptoboxx="/var/www/html/panel/inc/include/./uptobox.php"; Sgoun="/var/www/html/panel/inc/include/./gounlimited.php"; Sclicknupload="/var/www/html/panel/inc/include/./clicknupload.php"; Sdropapk="/var/www/html/panel/inc/include/./dropapk.php"; Sprostream="/var/www/html/panel/inc/include/./prostream.php"; Supstream="/var/www/html/panel/inc/include/./upstream.php"; Smystream="/var/www/html/panel/inc/include/./mystream.php"; SSHORT="/var/www/html/panel/inc/include/./short.php"; SOUO="/var/www/html/panel/inc/include/./ouo.php"; Rinsertar="/var/www/html/panel/inc/xion/./insertar.php"; Ragregar="/var/www/html/panel/inc/xion/./agregar.php"; CONFIG="/usr/local/bin/config.ini"; CONFIGGLOBAL="/var/www/html/panel/inc/config.php"; barraAzul="\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"; ruta_drive=$(pwd)
 
 fi
+
+#pegar marca de agua tipo logo en la parte superior derecha
+function pegarLogo () 
+{
+    local img="/var/www/html/panel/inc/img/marca5.png"
+    for i in $(ls *.mp4 *.mkv *.avi *.mpg 2>/dev/null); do
+        ffmpeg -i "${i}" -i "${img}" -filter_complex "overlay=x=(main_w-overlay_w)-15:y=23" -codec:a copy "${i}_marca.mp4" -y
+        rm "${i}"
+        # local a=$?
+        # [[ $a == 0 ]] && rm "$i"
+    done
+}
 
 # includeRuta='/var/www/html/panel/inc/include/';
 # ruta_Home=$(pwd)
@@ -516,7 +528,7 @@ function plantilla() {
     drivecri2=$(echo $LGDVIPPHP | awk -F "id=" '{print $2}')
     drivecri3=$(echo $LINK_STREAM2_DIRECTO | awk -F "id=" '{print $2}')
 
-    array=($UrlVerystream $UrlNetu $LGDVIPPHP $LGDPHP $MEGALPHP $MEGALPHP1 $LGDPHP1 $UrlJetload $UrlFembed $UrlUotobox $UrlGounlimited  $UrlClicknupload $UrlDropapk $UrlProstream $UrlUpstream $UrlMystream)
+    array=($UrlVerystream $UrlNetu $LGDVIPPHP $LGDPHP $MEGALPHP $MEGALPHP1 $LGDPHP1 $UrlJetload $UrlFembed $UrlUotobox $UrlUotoboxmi $UrlGounlimited  $UrlClicknupload $UrlDropapk $UrlProstream $UrlUpstream $UrlMystream)
     arraydescarga=($UrlVerystream $MEGALPHP $LGDPHP $MEGALPHP1 $LGDPHP1)
 
     descarga=$(/var/www/html/panel/inc/include/./file.php "${arraydescarga[@]}")
@@ -578,6 +590,8 @@ function definnirFifo()
     [[ -e $fifo3 ]] && rm $fifo3
     fifo4="/tmp/fifo${puesto}uptobox"
     [[ -e $fifo4 ]] && rm $fifo4
+    fifo4a="/tmp/fifo${puesto}uptoboxmi"
+    [[ -e $fifo4a ]] && rm $fifo4a
     fifo5="/tmp/fifo${puesto}gounlimited"
     [[ -e $fifo5 ]] && rm $fifo5
     fifo6="/tmp/fifo${puesto}Clicknupload"
@@ -608,6 +622,8 @@ function EnlacesMostar()
     echo $UrlJetload
     UrlUotobox=$(< $fifo4)
     echo $UrlUotobox
+    UrlUotoboxmi=$(< $fifo4a)
+    echo $UrlUotoboxmi
     UrlGounlimited=$(< $fifo5)
     echo $UrlGounlimited
     UrlClicknupload=$(< $fifo6)
@@ -641,15 +657,37 @@ function MostarEnlaces()
 
     fi
 }
+function subida_cam(){
+    definnirFifo
+    PP=1
+
+    echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mNETU\033[0m"
+    netu &
+    sleep 2
+
+    echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mFEMBED\033[0m"
+    fembed &
+    sleep 2
+
+    echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOX\033[0m"
+    Uptobox1  &
+
+    echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOXMI\033[0m"
+    Uptobox1 "admin" &
+    sleep 2
+
+    echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mMEGA\033[0m" 
+    subida_mega .megallin.txt
+}
 
 function subida_o_s_s_720() 
 {
     definnirFifo
     PP=1
 
-        # echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mFEMBED\033[0m"
-        # fembed &
-        # sleep 2
+        echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mFEMBED\033[0m"
+        fembed &
+        sleep 2
 
         # echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mGOUNLIMITED\033[0m" 
         # Gounlimited &
@@ -661,9 +699,11 @@ function subida_o_s_s_720()
         # echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mGD FREE\033[0m" 
         # # respaldoDrivePelis
         # drive33
-
         echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOX\033[0m"
-        Uptobox1 &
+        Uptobox1  &
+
+        echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOXMI\033[0m"
+        Uptobox1 "admin" &
         sleep 2
     
         echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mMEGA\033[0m" 
@@ -686,9 +726,9 @@ function subida_o_s_s_720p()
         netu &
         sleep 2
 
-        echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mMYSTREAM\033[0m"
-        mystream &
-        sleep 2
+        # echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mMYSTREAM\033[0m"
+        # mystream &
+        # sleep 2
 
         echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mFEMBED\033[0m"
         fembed &
@@ -724,12 +764,14 @@ function subida_o_s_s_1080()
     netu &
     sleep 2 
 
-    echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mFEMBED\033[0m"
-    fembed &
-    sleep 2
+    # echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mFEMBED\033[0m"
+    # fembed &
+    # sleep 2
 
     echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOX\033[0m"
     Uptobox1 &
+    echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOXMI\033[0m"
+    Uptobox1 "admin" &
     sleep 2
 
     # echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mGD-VIP\033[0m"
@@ -929,21 +971,25 @@ function subida_mega() {
                         MEGAESP=$(megadf --human | sed -n '3p')
                             while read line 
                             do
-                                
                                 echo "$line" > "$listamega$A"; CUENTAMEGA=$(cat "$listamega$A")
                                 let A++
-                                echo
+                                echo 
                                 echo -e "\033[1;32mCUENTA LLENA...PASAREMOS A LA CUENTA $CUENTAMEGA EN UN MOMENTO!! :)\033[0m"
-                                sleep 3
-
-                                sed '2d' $MEGARC > $MEGARC2; sed -i "2i Username = $CUENTAMEGA" $MEGARC2; rm -rf $MEGARC; mv $MEGARC2 $MEGARC
+                                
                                 sleep 1
-                                UPDATECUENTA=$(cat $MEGARC | sed -n '2p' | awk -F " " '{printf $3}')
-                                MEGAESP=$(megadf --human | sed -n '3p')
+                                if [[ -n "${CUENTAMEGA}" ]]; then
+
+                                    SPACEM=$(megadf -h -u "${CUENTAMEGA}" -p "${PMEGA}" | awk -F "Free:  " '{printf $2}')
+                                    [[ $SPACEM = "0 bytes" ]] && continue
+                                    sed '2d' $MEGARC > $MEGARC2; sed -i "2i Username = $CUENTAMEGA" $MEGARC2; rm -rf $MEGARC; mv $MEGARC2 $MEGARC
+                                    sleep 1
+                                    UPDATECUENTA=$(cat $MEGARC | sed -n '2p' | awk -F " " '{printf $3}')
+                                    MEGAESP=$(megadf --human | sed -n '3p')
                                     if [[ $MEGAESP != $MEGAESP1 ]]; then
                                         echo -e "\033[1;36mPERFECTO LA CUENTA \033[1;31m$UPDATECUENTA\033[0m ESTA DISPONIBLE!\033[0m"
                                         break
                                     fi
+                                fi
 
                             done < "$listamega"
                         #sed -n "$Ap" $listamega > $listamega1; CUENTAMEGA=$(cat "$listamega1")
@@ -999,27 +1045,29 @@ function subida_mega() {
             let A++
             echo
             echo -e "\033[1;32mERROR DE CUENTA...PASAREMOS A LA CUENTA $CUENTAMEGA EN UN MOMENTO!! :)\033[0m"
-            sleep 3
-
-            #sed '2d' $MEGARC > $MEGARC2; sed -i "2i Username = $CUENTAMEGA" $MEGARC2; rm -rf $MEGARC; mv $MEGARC2 $MEGARC
-            sed -i "2i\Username = $CUENTAMEGA" /root/.megarc
-
             sleep 1
-            #UPDATECUENTA=$(cat $MEGARC | sed -n '2p' | awk -F " " '{printf $3}')
-            MEGAESP=$(megadf --human | sed -n '1p' | awk '{print $1}')
-            echo -e "\033[1;36mPERFECTO LA CUENTA \033[1;31m$CUENTAMEGA\033[0m ESTA DISPONIBLE!\033[0m"
-                if [[ $MEGAESP = "Total:" ]]; then  
-                    while true ; do
-                        megaput $FICHERO_mega --debug=cache 2>&1 | tee .megalog
-                        sleep 2s
-                        COMPROBAR=$(megals -e "/Root/${FICHERO_mega}" | awk -F ' /' '{print $2}')
-                        if [[ $COMPROBAR == "Root/$FICHERO_mega" ]]; then
-                            break
-                        fi
-                    done
-                    break
-                fi
-            sed -i '2d' /root/.megarc
+            if [[ -n "${CUENTAMEGA}" ]]; then
+            
+                sed '2d' $MEGARC > $MEGARC2; sed -i "2i Username = $CUENTAMEGA" $MEGARC2; rm -rf $MEGARC; mv $MEGARC2 $MEGARC
+                # sed -i "2i\Username = $CUENTAMEGA" /root/.megarc
+
+                sleep 1
+                # UPDATECUENTA=$(cat $MEGARC | sed -n '2p' | awk -F " " '{printf $3}')
+                MEGAESP=$(megadf --human | sed -n '1p' | awk '{print $1}')
+                echo -e "\033[1;36mPERFECTO LA CUENTA \033[1;31m$CUENTAMEGA\033[0m ESTA DISPONIBLE!\033[0m"
+                    if [[ $MEGAESP = "Total:" ]]; then  
+                        while true ; do
+                            megaput $FICHERO_mega --debug=cache 2>&1 | tee .megalog
+                            sleep 2s
+                            COMPROBAR=$(megals -e "/Root/${FICHERO_mega}" | awk -F ' /' '{print $2}')
+                            if [[ $COMPROBAR == "Root/$FICHERO_mega" ]]; then
+                                break
+                            fi
+                        done
+                        break
+                    fi
+                sed -i '2d' /root/.megarc
+            fi
 
         done < "$listamega"
 
@@ -1052,7 +1100,7 @@ function subida_mega() {
     fi
     echo $MEGALPHP > $fifoMega
 
-    [[ $MEGALPHP ]] && BackupMega "$MEGALPHP" "$bid"
+    # [[ $MEGALPHP ]] && BackupMega "$MEGALPHP" "$bid"
 }
 
 
@@ -1068,18 +1116,32 @@ function Verystream()
 
 function fembed()
 {
-   ruu=$(pwd)
+    ruu=$(pwd)
+    ruta_cache="/var/www/html/panel2/panel/inc/include/fembed/fembed_cache/"
+    rm "${ruta_cache}"* 2>/dev/null
+    datos_fembed=$($SFembed "${ruu}/${MiPeli}")
+    echo "${datos_fembed}"
 
-   datos_fembed=$($SFembed "${ruu}/${MiPeli}")
-    # $SFembed "$MiPeli" 2>&1 | tee fff.txt
-   errorFembed=$?
-#    echo "lo que paso"
-#    echo "$datos_fembed"
+#    echo "Termino fembed"
 #    read
-   id_fembed_2=$(echo $datos_fembed | awk -F 'Fembed ID: ' '{print $2}')
-   id_fembed=`echo $id_fembed_2 | sed 's/ *$//g'`
-   script_F="https://fembed.com/f/${id_fembed}"
-   echo $script_F > $fifo1
+    # $SFembed "$MiPeli" 2>&1 | tee fff.txt
+    errorFembed=$?
+    #    echo "lo que paso"
+    #    echo "$datos_fembed"
+    #    read
+    id_fembed_2=$(echo $datos_fembed | awk -F 'Fembed ID: ' '{print $2}')
+    id_fembed=`echo $id_fembed_2 | sed 's/ *$//g'`
+        echo "${datos_fembed}"
+    if [[ -z "${id_fembed}" ]]; then
+            until [ -n "${id_fembed}" ]; do
+                datos_fembed=$($SFembed "${ruu}/${MiPeli}")
+                id_fembed_2=$(echo $datos_fembed | awk -F 'Fembed ID: ' '{print $2}')
+                id_fembed=`echo $id_fembed_2 | sed 's/ *$//g'`
+            done
+        fi
+    
+    script_F="https://fembed.com/f/${id_fembed}"
+    echo $script_F > $fifo1
 
    MostarEnlaces "Fembed" $script_F $errorFembed
 }
@@ -1113,11 +1175,22 @@ function jetload()
 }
 function Uptobox1()
 {
-    upt=$($Uptoboxx $MiPeli 2>/dev/null)
-    errorUP=$?
-    echo $upt > $fifo4
+    local admin="${1}"
+    if [[ -n "${admin}" ]]; then
+        upt=$($Uptoboxmi $MiPeli 2>/dev/null)
+        errorUP=$?
+        echo $upt > $fifo4a
 
-    MostarEnlaces "Uptobox" $upt $errorUP
+        MostarEnlaces "Uptoboxmi" $upt $errorUP
+    else
+        upt=$($Uptoboxx $MiPeli 2>/dev/null)
+        errorUP=$?
+        echo $upt > $fifo4
+
+        MostarEnlaces "Uptobox" $upt $errorUP
+    fi
+
+    
 }
 function Gounlimited()
 {
@@ -1298,24 +1371,30 @@ function PegarSubtitulos(){
                     if [[ "$STREAM_LINE" ]];then
                         if [[ "$STREAM_LINE" != *default* && "$STREAM_LINE" == *spa* ]];then
                             STREAM_SUB_CODE=$(echo "$STREAM_LINE" | cut -d":" -f2 | cut -d"(" -f1)
-                        elif [[ "$STREAM_LINE" == *spa* ]];then
+                            break
+                        elif [[ "$STREAM_LINE" == *spa* && "$STREAM_LINE" != *hdmv_pgs_subtitle* ]]; then
                             STREAM_SUB_CODE=$(echo "$STREAM_LINE" | cut -d":" -f2 | cut -d"(" -f1)
-
+                            break
+                        elif [[ "$STREAM_LINE" != *hdmv_pgs_subtitle* ]];then
+                            STREAM_SUB_CODE=$(echo "$STREAM_LINE" | cut -d":" -f2 | cut -d"(" -f1)
+                            break
                         fi
                     else 
-                    echo "No encontre sub en el mkv"
+                        echo "No encontre sub en el mkv"
                     fi
 
 
                     # [[ `echo "$LISTSUB" | sed -n "${i}p" | grep "spa"` != *default* && `echo "$LISTSUB" | sed -n "${i}p" | grep "spa"` == *spa* ]] && STREAM_SUB_CODE=$(echo "$LISTSUB" | sed -n "${i}p" | cut -d":" -f2 | cut -d"(" -f1)
                 done
+                echo "$STREAM_SUB_CODE"
+                msg -ama "ARRIBA EL CODE"
                 if [[ $STREAM_SUB_CODE ]];then
-                    ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
+                    ass=$(ffmpeg -i "${MiPelii}" 2>&1 | grep -i Subtitle | grep -i 0:"${STREAM_SUB_CODE}" | grep -i ass | awk '{print $4}')
                     if [[ $ass ]]; then
-                        ffmpeg -i $MiPelii -map 0:$STREAM_SUB_CODE -codec:s ass subtitulos.ass -y
+                        ffmpeg -i $MiPelii -map 0:"${STREAM_SUB_CODE}" -codec:s ass subtitulos.ass -y
                         subt="subtitulos.ass"
                     else
-                        ffmpeg -i $MiPelii -map 0:$STREAM_SUB_CODE -codec:s srt subtitulos.srt -y
+                        ffmpeg -i "${MiPelii}" -map 0:"${STREAM_SUB_CODE}" -codec:s srt subtitulos.srt -y
                         subt="subtitulos.srt"
                     fi
                 else
@@ -1393,11 +1472,18 @@ function PegarSubtitulos(){
             else
                 # ffmpeg -threads 4 -i $MiPelii -i /var/www/html/de/agua13.png -filter_complex \
                 # "subtitles=$subt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -codec:a copy S.$MiPelii.mp4
-                ffmpeg -i $MiPelii -filter_complex \
-                "subtitles=$subt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -c:v libx264 -crf 17 -strict -2 S.$MiPelii.mp4
+                
+                msg -ama "8 Nucleos Active!"
+                if [[ -n "${MARCA_AGUA}" ]]; then
+                    img="/var/www/html/panel/inc/img/marca5.png"
+                    ffmpeg -threads 8 -i $MiPelii -i "${img}" -filter_complex "subtitles=$subt:force_style='Fontsize=22,PrimaryColour=&H00ffff&', overlay=x=(main_w-overlay_w)-15:y=23" -codec:a copy S.$MiPelii.mp4 -y
+                else
+                    ffmpeg -threads 8 -i $MiPelii -filter_complex \
+                        "subtitles=$subt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -c:v libx264 -crf 17 -strict -2 S.$MiPelii.mp4
+                fi
                 er=$?
                 mv "S.$MiPelii.mp4" SubPega
-                if [[ $er = 0 ]]; then
+                if [[ $er == 0 ]]; then
                     rm $MiPelii
                     rm $subt
                 fi
@@ -1506,17 +1592,18 @@ function descompri() {
             *rar)
             unrar x -p$PSW6 '*.rar' -y 
             error=$?
-            comprobar1
+            [[ "$error" == 3 ]] && rm *
             printf "${CYANCLARO}";
             echo "FICHEROS RAR DESCOMPRIMIDOS CON EXITO!!";;
             *zip)
             # unzip $RAR -y
             7z x $RAR -p${PSW6}
             error=$?
+            [[ "$error" == 3 ]] && rm *
             comprobar1
             printf "${CYANCLARO}";
             echo "FICHEROS ZIP DESCOMPRIMIDOS CON EXITO!!";;
-        esac         
+        esac        
         for f in * ; do mv "$f" "${f// /_}" ; done > /dev/null 2>> /root/log.txt
         find . ! -name credentials.json ! -name drivedb -type f -exec mv {} . 2>/dev/null \;
         find . ! -name .gd -type d -exec rm -rf {} 2>/dev/null \;
@@ -1639,7 +1726,7 @@ function EscogerAudio(){
         for c in `ls *.mkv *.mp4 *.avi *.mpg`; do
         
 
-            cc=$(ffmpeg -i $c 2>&1 | awk '/Audio/,/title/')
+            cc=$(ffmpeg -i "$c" 2>&1 | awk '/Audio/,/title/')
             if [[ $ELEGIRAUDIO = 1 ]]; then
                 
                 array_lat=("Latino" "Latin" "Mexico")
@@ -1698,45 +1785,45 @@ function EscogerAudio(){
 
 
                 #Audio español
-                elif [[ $ELEGIRAUDIO = 2 ]]; then
-                    array_esp=("España" "Español" "Espanol" "Castellano")
-                    for (( i = 0; i < "${#array_esp[@]}"; i++ )); do
-                        AUDIOT_ESP=$(ffprobe $c 2>&1 | awk '/Audio/,/title/' | grep -B 2 "${array_esp[$i]}" | awk -F ":" '{print $2}')
-                        if [[ $AUDIOT_ESP ]]; then
-                            break
-                        fi
-                    done
-
-                    if [[ $AUDIOT_ESP ]]; then
-                        msg -azu ".:el idioma es Castellano:.."
-                        mkvmerge -o $c.ESP.mkv -a "${AUDIOT_ESP::1}" "$c"
-                        err=$?
-                        ComprobarExtAudio "$c"
-                        mv "$c.ESP.mkv" "$c"; mv "$c" "$carpet"
-
-
-                        else
-                            array_esp2=("spa")
-                            for (( i = 0; i < "${#array_esp2[@]}"; i++ )); do
-                                NFLUJO=$(echo "$cc" | grep -i "${array_esp2[$i]}" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
-                                if [[ $NFLUJO ]]; then
-                                    break
-                                fi
-                            done
-                            if [[ $NFLUJO ]]; then
-                            	msg -azu ".:el idioma es Castellano:.."
-                                mkvmerge -o $c.ESP.mkv -a "${NFLUJO::1}" "$c"
-                                err=$?
-                                ComprobarExtAudio "$c"
-                                mv "$c.ESP.mkv" "$c"; mv "$c" "$carpet"
-                            fi
+            elif [[ $ELEGIRAUDIO = 2 ]]; then
+                array_esp=("España" "Español" "Espanol" "Castellano")
+                for (( i = 0; i < "${#array_esp[@]}"; i++ )); do
+                    AUDIOT_ESP=$(ffprobe "$c" 2>&1 | awk '/Audio/,/title/' | grep -B 2 "${array_esp[$i]}" | awk -F ":" '{print $2}')
+                    if [[ "$AUDIOT_ESP" ]]; then
+                        break
                     fi
+                done
+
+                if [[ "$AUDIOT_ESP" ]]; then
+                    msg -azu ".:el idioma es Castellano:.."
+                    mkvmerge -o "$c.ESP.mkv" -a "${AUDIOT_ESP::1}" "$c"
+                    err=$?
+                    ComprobarExtAudio "$c"
+                    mv "$c.ESP.mkv" "$c"; mv "$c" "$carpet"
+
+
+                    else
+                        array_esp2=("spa")
+                        for (( i = 0; i < "${#array_esp2[@]}"; i++ )); do
+                            NFLUJO=$(echo "$cc" | grep -i "${array_esp2[$i]}" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
+                            if [[ $NFLUJO ]]; then
+                                break
+                            fi
+                        done
+                        if [[ $NFLUJO ]]; then
+                            msg -azu ".:el idioma es Castellano:.."
+                            mkvmerge -o $c.ESP.mkv -a "${NFLUJO::1}" "$c"
+                            err=$?
+                            ComprobarExtAudio "$c"
+                            mv "$c.ESP.mkv" "$c"; mv "$c" "$carpet"
+                        fi
+                fi
 
 
 
                     #audio ingles
             elif [[ $ELEGIRAUDIO = 3 ]]; then
-                array_ing=("Ingles" "english")
+                array_ing=("Ingles" "english" "Inglés")
                 for (( i = 0; i < "${#array_ing[@]}"; i++ )); do
                     AUDIOT_ING=$(ffprobe $c 2>&1 | awk '/Audio/,/title/' | grep -B 2 "${array_ing[$i]}" | awk -F ":" '{print $2}')
                     if [[ $AUDIOT_ING ]]; then
@@ -1745,28 +1832,28 @@ function EscogerAudio(){
                 done
                     
                     if [[ $AUDIOT_ING ]]; then
-                        msg -azu ".:el idioma es Ingles:.."
+                        msg -azu ".:el idioma es Ingles:.. 1"
                         mkvmerge -o $c.SUB.mkv -a "${AUDIOT_ING::1}" "$c"
                         err=$?
                         ComprobarExtAudio "$c"
                         mv "$c.SUB.mkv" "$c"; mv "$c" "$carpet"
-                        else
+                    else
 
-                            array_ing2=("eng" "und")
-                            for (( i = 0; i < "${#array_ing2[@]}"; i++ )); do
-                                NFLUJO=$(echo "$cc" | grep -i "${array_ing2[$i]}" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
-                                if [[ $NFLUJO ]]; then
-                                    break
-                                fi
-                            done
-
+                        array_ing2=("eng" "und")
+                        for (( i = 0; i < "${#array_ing2[@]}"; i++ )); do
+                            NFLUJO=$(echo "$cc" | grep -i "(${array_ing2[$i]})" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
                             if [[ $NFLUJO ]]; then
-                                msg -pur ".:el idioma es Ingles:.."
-                                mkvmerge -o $c.SUB.mkv -a "${NFLUJO::1}" "$c"
-                                err=$?
-                                ComprobarExtAudio "$c"
-                                mv "$c.SUB.mkv" "$c"; mv "$c" "$carpet"
+                                break
                             fi
+                        done
+
+                        if [[ $NFLUJO ]]; then
+                            msg -pur ".:el idioma es Ingles:.. 2"
+                            mkvmerge -o $c.SUB.mkv -a "${NFLUJO::1}" "$c"
+                            err=$?
+                            ComprobarExtAudio "$c"
+                            mv "$c.SUB.mkv" "$c"; mv "$c" "$carpet"
+                        fi
                     fi
             fi
 

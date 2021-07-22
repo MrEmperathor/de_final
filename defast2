@@ -15,21 +15,26 @@ function elemento2()
     SAVEIFS=$IFS; 
     IFS=$(echo -en "\n\b")
     TArchivo;
-    descompri;
-    aguaMarca; 
+    descompri; 
     _quitar_audio
-    EscogerAudio; 
+    EscogerAudio;
+    PegarSubtitulos;
+    [[ -z "${EXTRASUB}" && -n "${MARCA_AGUA}" ]] && pegarLogo
+    aguaMarca;
     [[ ! $ID_DB_PELI ]] && addBd;
-    PegarSubtitulos; 
     renom; 
     ConvertirPeli; 
     for i in "${SERVIDORES[@]}"; do
         case $i in
-            1080|"CAM") subida_o_s_s_1080 $OMITIR; IFS=$SAVEIFS; sudmenu 2>/dev/null
+            1080) subida_o_s_s_1080 $OMITIR; IFS=$SAVEIFS; sudmenu 2>/dev/null
             ;;
             720) subida_o_s_s_720; IFS=$SAVEIFS; sudmenu; 2>/dev/null
             ;;
             "720p") subida_o_s_s_720p; IFS=$SAVEIFS; sudmenu 2>/dev/null
+            ;;
+            "CAM") subida_cam; IFS=$SAVEIFS; sudmenu 2>/dev/null
+            ;;
+            "HD") subida_cam; IFS=$SAVEIFS; sudmenu 2>/dev/null;
             ;;
             "hqq.to"|"jetload"|"uptobox"|"gounlimited"|"mega"|"gdfree"|"gdvip"|"mystream"|"fembed"|"backup") SERVIDOR_A_BUSCAR="${i}"; 
             ServidorAll "$MiPeli" " " "$SERVIDOR_A_BUSCAR" "$SERVIDOR_A_BUSCAR" "$ID_DB_PELI"
@@ -41,6 +46,7 @@ function elemento2()
     # IFS=$SAVEIFS; 
     # sudmenu 2>/dev/null
     # && rm "$MiPeli"
+    
     cd ${RUTA_T}; [[ -z "$borrar" ]] && rm -rf ${RUTA_T}/*
     
     
@@ -120,10 +126,14 @@ function obtenerLinkCalidad()
     rclone link drive7:/obt_calidades/"${FILENAME}"
 }
 # echo "OPTIND inicia en $OPTIND"
-v=0; n=0
-while getopts "c:t:n:e:i:s:a:p:o:L:F:C:I:K:V:T:R:E:B:" optname
+v=0; n=0 
+while getopts "c:t:n:e:i:s:a:p:o:m:L:F:C:I:K:V:T:R:E:B:" optname
   do
     case "$optname" in
+        "m")
+            MARCA_AGUA=$OPTARG;
+            # echo "Se ha especificado la opción $optname y su valor es $CALIDA1"
+            ;;
         "a")
             ID_DB_PELI=$OPTARG;
             # echo "Se ha especificado la opción $optname y su valor es $CALIDA1"
@@ -274,7 +284,7 @@ if [[ "$PELI_O_SERIE" == 'se3' ]]; then
     # esac
 else
     case ${SERVIDORES[0]} in
-        "hqq.to"|"jetload"|"uptobox"|"gounlimited"|"mega"|"gdfree"|"gdvip"|"fembed"|1080|720|720p|"CAM") elemento2
+        "hqq.to"|"jetload"|"uptobox"|"gounlimited"|"mega"|"gdfree"|"gdvip"|"fembed"|1080|720|720p|"CAM"|"HD") elemento2
         ;;
         "backup") msg -ama "creando BACKUP..."; BackupMega "${FARRAY[0]}" $ID_DB_PELI 
         ;;

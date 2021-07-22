@@ -444,9 +444,29 @@ elif [[ $host == "www.fembed.com" || $host == "fembed.com"  ]]; then
     fi
     
     
-      
+    
 elif [[ $proto == "https://" || $proto == "http://" ]]; then
-    aria2c -x16 -s16 "${1}"    
+    msg -azu "INICIANDO DESCARGA..."
+    aria2c -x16 -s16 "${1}" 2>&1 | tee .googledd.log
+    fileDes=$(cat .googledd.log)
+    # fileDes=$(aria2c -x16 -s16 "${1}" 2>&1)
+    echo "$fileDes"
+    fileD=$(echo "$fileDes"| grep "Download complete" | cut -d"/" -f9)
+    echo "$fileD"
+    sal=$(ffmpeg -i "$fileD" 2>&1 | grep "Input #0")
+    echo "$sal"
+    if [[ "$sal" ]]; then
+        if [[ "$sal" =~ "mp4" ]]; then
+            mv "$fileD" "${fileD}.mp4"
+        elif [[ "$sal" =~ "mkv" ]]; then
+            mv "$fileD" "${fileD}.mkv"
+        elif [[ "$sal" =~ "avi" ]]; then
+            mv "$fileD" "${fileD}.avi"
+        elif [[ "$sal" =~ "mpg" ]]; then
+            mv "$fileD" "${fileD}.mpg"
+        fi
+    fi
+    
 else
 
     if [[ "$2" == "de3" ]]; then

@@ -11,8 +11,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbose", help="Mostrar información de depuración", action="store_true")
 # parser.add_argument("-f", "--file", help="Nombre de archivo a procesar")
 parser.add_argument("-i", "--id", help="Nombre del ID de la base de datos")
-parser.add_argument("-d", "--drive", help="Nombre de id De Google Drive")
+parser.add_argument("-d", "--tmdb", help="Nombre de id tmdb")
 parser.add_argument("-t", "--tabla", help="Nombre de la tabla")
+parser.add_argument("-b", "--base", help="Nombre de la base")
 args = parser.parse_args()
 
 # Aquí procesamos lo que se tiene que hacer con cada argumento
@@ -22,11 +23,19 @@ if args.verbose:
 if args.id:
     
     myId = args.id
-    idDrive = args.drive
+    idDrive = args.tmdb
     tabla = args.tabla
+    if args.base == "3":
+        baseDatos = "breaky"
+        print("esta es mi base",baseDatos)
+
+        conexion1=mysql.connector.connect(host="localhost", user="root", passwd="9999zzzz", database=baseDatos)
+    else:
+        conexion1=mysql.connector.connect(host="localhost", user="root", passwd="9999zzzz", database="uploaddll")
+
     print("El nombre de archivo a procesar es myId: ", myId)
-    print("El nombre de archivo a procesar es idDrive: ", idDrive)
-    conexion1=mysql.connector.connect(host="localhost", user="root", passwd="9999zzzz", database="uploaddll")
+    print("El nombre de archivo a procesar es tmdb: ", idDrive)
+    
 
     cursor1=conexion1.cursor()
     # cursor1.execute("delete from articulos where codigo=1")

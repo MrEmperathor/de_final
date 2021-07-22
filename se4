@@ -327,16 +327,20 @@ function subida_mega_series() {
                         let A++
                         echo
                         echo -e "\033[1;32mCUENTA LLENA...PASAREMOS A LA CUENTA $CUENTAMEGA EN UN MOMENTO!! :)\033[0m"
-                        sleep 3
-
-                        sed '2d' $MEGARC > $MEGARC2; sed -i "2i Username = $CUENTAMEGA" $MEGARC2; rm -rf $MEGARC; mv $MEGARC2 $MEGARC
                         sleep 1
-                        UPDATECUENTA=$(cat $MEGARC | sed -n '2p' | awk -F " " '{printf $3}')
-                        MEGAESP=$(megadf --human | sed -n '3p')
+                        if [[ -n "${CUENTAMEGA}" ]]; then
+                            SPACEM=$(megadf -h -u "${CUENTAMEGA}" -p "${PMEGA}" | awk -F "Free:  " '{printf $2}')
+                            [[ $SPACEM = "0 bytes" ]] && continue
+                        
+                            sed '2d' $MEGARC > $MEGARC2; sed -i "2i Username = $CUENTAMEGA" $MEGARC2; rm -rf $MEGARC; mv $MEGARC2 $MEGARC
+                            sleep 1
+                            UPDATECUENTA=$(cat $MEGARC | sed -n '2p' | awk -F " " '{printf $3}')
+                            MEGAESP=$(megadf --human | sed -n '3p')
                             if [[ $MEGAESP != $MEGAESP1 ]]; then
                                 echo -e "\033[1;36mPERFECTO LA CUENTA \033[1;31m$UPDATECUENTA\033[0m ESTA DISPONIBLE!\033[0m"
                                 break
                             fi
+                        fi
 
                     done < "$listamega"
                 #sed -n "$Ap" $listamega > $listamega1; CUENTAMEGA=$(cat "$listamega1")
@@ -478,7 +482,7 @@ function plantilla2() {
 
     cadena_array=$(/var/www/html/panel/inc/include/./serializar.php "$enlaces_pre" "$enlaces_pre1" "$enlaces_pre2" "$enlaces_pre3" "$enlaces_pre4" "$enlaces_pre5" "$enlaces_pre6" "$enlaces_pre7" "$enlaces_pre8" "$enlaces_pre9" "$enlaces_pre10")
 
-    /var/www/html/panel/inc/xion/./insertarserie.php $IDSERIE "$FILEE" $NT $CALIDA1 $IDIOMA1 "$cadena_array" "${enlaces_backup}"
+    /var/www/html/panel/inc/xion/./insertarserie.php $IDSERIE "$FILEE" $NT $CALIDA1 $IDIOMA1 "$cadena_array" "${enlaces_backup}" "admin2"
 }
 
 for MiPeli in `ls *.mp4 *.mkv *.avi *.mpg`; do
@@ -2096,14 +2100,27 @@ function fembed_series()
 {
     unset upName; unset gouTV; unset datoFembed; unset fembedTVV; unset fembedTV
     i=1; ruu=$(pwd)
+    ruta_cache="/var/www/html/panel/inc/include/fembed/fembed_cache/"
+    rm "${ruta_cache}"* 2>/dev/null
     local upName=(`ls ${RD}/${R_CARPETA_SERIE}`)
     mul; 
     # ProgressBar
     for (( i = 0; i < "${#upName[@]}"; i++ )); do
-    
+        rm "${ruta_cache}"* 2>/dev/null
         local datoFembed[$i]=$($SFembed "${R_CARPETA_SERIE}/${upName[$i]}")
         local fembedTVV[$i]=$(echo "${datoFembed[$i]}" | awk -F 'Fembed ID: ' '{print $2}')
         local fembedTVV[$i]=`echo ${fembedTVV[$i]} | sed 's/ *$//g'`
+        uno=1
+        if [ -z "${fembedTVV[$i]}" ]; then
+            until [ -n "${fembedTVV[$i]}" ]; do
+                rm "${ruta_cache}"* 2>/dev/null
+                msg -ama "intento #$uno"
+                local datoFembed[$i]=$($SFembed "${R_CARPETA_SERIE}/${upName[$i]}")
+                local fembedTVV[$i]=$(echo "${datoFembed[$i]}" | awk -F 'Fembed ID: ' '{print $2}')
+                local fembedTVV[$i]=`echo ${fembedTVV[$i]} | sed 's/ *$//g'`
+                ((uno++))
+            done
+        fi
         # msg -ama "LO QUE PASO 1: ${fembedTVV[$i]}"
 
         [[ -n "${fembedTVV[$i]}" ]] && fembedTV[$i]="https://fembed.com/f/${fembedTVV[$i]}"
@@ -2651,6 +2668,8 @@ function drive3() {
     {
         if [[ $host != "www.viki.com" && $host != "viki.com" ]]; then
             PegarSubtitulos
+            #pegar marca de agua
+            [[ -z "${EXTRASUB}" && -n "${MARCA_AGUA}" ]] && pegarLogo
         fi
     }
 

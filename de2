@@ -6,6 +6,7 @@
 source $CONFIG
 PSW6=$PASSRAR
 
+echo "$SNetu"
 function EspacioTrabajo(){
 
     echo " "

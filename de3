@@ -1413,250 +1413,251 @@ function aguaMarca()
     done 2>/dev/null
 }
 
-function PegarSubtitulos(){
+# function PegarSubtitulos(){
 
     
-    # ffmpeg -i cobra.mkv -ss 00:15:03 -t 00:00:30 -c:v copy -c:a copy nuerte60.mp4
-    if [[ $EXTRASUB ]]; then
+#     # ffmpeg -i cobra.mkv -ss 00:15:03 -t 00:00:30 -c:v copy -c:a copy nuerte60.mp4
+#     if [[ $EXTRASUB ]]; then
         
-        echo "EXTRALLENDO SUBS"
-        echo -e $barraAzul
-        for f in * ; do mv "$f" "${f// /_}" ; done 2>/dev/null
-        for g in * ; do mv "$g" "${g/"Copia de "/}" ; done 2>/dev/null
-        for i in * ; do mv -- "${i}" "${i//['][!”#$%&’ ()*+,/:;<=>?@\^`{\|}~-']/_}" ; done 2>/dev/null
-        mkdir SubPega
+#         echo "EXTRALLENDO SUBS"
+#         echo -e $barraAzul
+#         for f in * ; do mv "$f" "${f// /_}" ; done 2>/dev/null
+#         for g in * ; do mv "$g" "${g/"Copia de "/}" ; done 2>/dev/null
+#         for i in * ; do mv -- "${i}" "${i//['][!”#$%&’ ()*+,/:;<=>?@\^`{\|}~-']/_}" ; done 2>/dev/null
+#         mkdir SubPega
 
-        for MiPelii in `ls *.mp4 *.mkv *.avi *.mpg`; do
-            echo $MiPelii
-            NFLUJO0=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | wc -l)
+#         for MiPelii in `ls *.mp4 *.mkv *.avi *.mpg`; do
+#             echo $MiPelii
+#             NFLUJO0=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | wc -l)
 
-            if [[ $NFLUJO0 = 1 ]]; then
-                NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
-                ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-                if [[ $ass ]]; then
-                    ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
-                    subt="subtitulos.ass"
-                else
-                    ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
-                    subt="subtitulos.srt"
-                fi
-            elif [[ $NFLUJO0 -ge 2 ]]; then
-                LISTSUB=$(ffmpeg -i "$MiPelii" 2>&1 | grep -i Subtitle)
-                CANTIDADSUB=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | wc -l)
+#             if [[ $NFLUJO0 = 1 ]]; then
+#                 NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
+#                 ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
+#                 if [[ $ass ]]; then
+#                     ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
+#                     subt="subtitulos.ass"
+#                 else
+#                     ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
+#                     subt="subtitulos.srt"
+#                 fi
+#             elif [[ $NFLUJO0 -ge 2 ]]; then
+#                 LISTSUB=$(ffmpeg -i "$MiPelii" 2>&1 | grep -i Subtitle)
+#                 CANTIDADSUB=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | wc -l)
                 
 
-                for (( i=1; i<=$CANTIDADSUB; i++ )); do
-                    STREAM_LINE=$(echo "$LISTSUB" | sed -n "${i}p")
-                    if [[ "$STREAM_LINE" ]];then
-                        if [[ "$STREAM_LINE" != *default* && "$STREAM_LINE" == *spa* ]];then
-                            STREAM_SUB_CODE=$(echo "$STREAM_LINE" | cut -d":" -f2 | cut -d"(" -f1)
-                        elif [[ "$STREAM_LINE" == *spa* ]];then
-                            STREAM_SUB_CODE=$(echo "$STREAM_LINE" | cut -d":" -f2 | cut -d"(" -f1)
+#                 for (( i=1; i<=$CANTIDADSUB; i++ )); do
+#                     STREAM_LINE=$(echo "$LISTSUB" | sed -n "${i}p")
+#                     if [[ "$STREAM_LINE" ]];then
+#                         if [[ "$STREAM_LINE" != *default* && "$STREAM_LINE" == *spa* ]];then
+#                             STREAM_SUB_CODE=$(echo "$STREAM_LINE" | cut -d":" -f2 | cut -d"(" -f1)
+#                         elif [[ "$STREAM_LINE" == *spa* ]];then
+#                             STREAM_SUB_CODE=$(echo "$STREAM_LINE" | cut -d":" -f2 | cut -d"(" -f1)
 
-                        fi
-                    else 
-                    echo "No encontre sub en el mkv"
-                    fi
+#                         fi
+#                     else 
+#                     echo "No encontre sub en el mkv"
+#                     fi
 
 
-                    # [[ `echo "$LISTSUB" | sed -n "${i}p" | grep "spa"` != *default* && `echo "$LISTSUB" | sed -n "${i}p" | grep "spa"` == *spa* ]] && STREAM_SUB_CODE=$(echo "$LISTSUB" | sed -n "${i}p" | cut -d":" -f2 | cut -d"(" -f1)
-                done
-                if [[ $STREAM_SUB_CODE ]];then
-                    ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-                    if [[ $ass ]]; then
-                        ffmpeg -i $MiPelii -map 0:$STREAM_SUB_CODE -codec:s ass subtitulos.ass -y
-                        subt="subtitulos.ass"
-                    else
-                        ffmpeg -i $MiPelii -map 0:$STREAM_SUB_CODE -codec:s srt subtitulos.srt -y
-                        subt="subtitulos.srt"
-                    fi
-                else
-                    NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i spa | grep -i subrip | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
-                    NC=$(echo $NFLUJO | wc -w)
-                    if [[ $NC = 1 ]]; then
-                        ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-                        if [[ $ass ]]; then
-                            ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
-                            subt="subtitulos.ass"
-                        else
-                            ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
-                            subt="subtitulos.srt"
-                        fi
-                    fi
-                    if [[ ! $NFLUJO ]]; then
-                        echo "no hay flujo"
-                        NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -v eng | grep -i subrip | awk -F ":" '{print $2}' | awk -F "(" '{print $1}')
-                        NC=$(echo $NFLUJO | wc -w)
-                        if [[ $NC = 1 ]]; then
-                            ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-                            if [[ $ass ]]; then
-                                ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
-                                subt="subtitulos.ass"
-                            else
-                                ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
-                                subt="subtitulos.srt"
-                            fi
-                        fi
-                        if [[ $NC = 2 ]]; then
-                            echo "NC 2"
-                            NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -v und | grep -i subrip | awk -F ":" '{print $2}' | awk -F "(" '{print $1}')
-                            NC=$(echo $NFLUJO | wc -w)
-                            if [[ $NC = 1 ]]; then
-                                ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-                                if [[ $ass ]]; then
-                                    ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
-                                    subt="subtitulos.ass"
-                                else
-                                    ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
-                                    subt="subtitulos.srt"
-                                fi
-                            else
-                                NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -v "(forced)" | awk -F ":" '{print $2}' | awk -F "(" '{print $1}')
-                                NC=$(echo $NFLUJO | wc -w)
-                                echo $NC
-                                if [[ $NC = 1 ]]; then
-                                    ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-                                    if [[ $ass ]]; then
-                                        ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
-                                        subt="subtitulos.ass"
-                                    else
-                                        ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
-                                        subt="subtitulos.srt"
-                                    fi
-                                fi
-                            fi
-                        fi
-                    fi
-                fi
+#                     # [[ `echo "$LISTSUB" | sed -n "${i}p" | grep "spa"` != *default* && `echo "$LISTSUB" | sed -n "${i}p" | grep "spa"` == *spa* ]] && STREAM_SUB_CODE=$(echo "$LISTSUB" | sed -n "${i}p" | cut -d":" -f2 | cut -d"(" -f1)
+#                 done
+#                 if [[ $STREAM_SUB_CODE ]];then
+#                     ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
+#                     if [[ $ass ]]; then
+#                         ffmpeg -i $MiPelii -map 0:$STREAM_SUB_CODE -codec:s ass subtitulos.ass -y
+#                         subt="subtitulos.ass"
+#                     else
+#                         ffmpeg -i $MiPelii -map 0:$STREAM_SUB_CODE -codec:s srt subtitulos.srt -y
+#                         subt="subtitulos.srt"
+#                     fi
+#                 else
+#                     NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i spa | grep -i subrip | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
+#                     NC=$(echo $NFLUJO | wc -w)
+#                     if [[ $NC = 1 ]]; then
+#                         ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
+#                         if [[ $ass ]]; then
+#                             ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
+#                             subt="subtitulos.ass"
+#                         else
+#                             ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
+#                             subt="subtitulos.srt"
+#                         fi
+#                     fi
+#                     if [[ ! $NFLUJO ]]; then
+#                         echo "no hay flujo"
+#                         NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -v eng | grep -i subrip | awk -F ":" '{print $2}' | awk -F "(" '{print $1}')
+#                         NC=$(echo $NFLUJO | wc -w)
+#                         if [[ $NC = 1 ]]; then
+#                             ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
+#                             if [[ $ass ]]; then
+#                                 ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
+#                                 subt="subtitulos.ass"
+#                             else
+#                                 ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
+#                                 subt="subtitulos.srt"
+#                             fi
+#                         fi
+#                         if [[ $NC = 2 ]]; then
+#                             echo "NC 2"
+#                             NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -v und | grep -i subrip | awk -F ":" '{print $2}' | awk -F "(" '{print $1}')
+#                             NC=$(echo $NFLUJO | wc -w)
+#                             if [[ $NC = 1 ]]; then
+#                                 ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
+#                                 if [[ $ass ]]; then
+#                                     ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
+#                                     subt="subtitulos.ass"
+#                                 else
+#                                     ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
+#                                     subt="subtitulos.srt"
+#                                 fi
+#                             else
+#                                 NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -v "(forced)" | awk -F ":" '{print $2}' | awk -F "(" '{print $1}')
+#                                 NC=$(echo $NFLUJO | wc -w)
+#                                 echo $NC
+#                                 if [[ $NC = 1 ]]; then
+#                                     ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
+#                                     if [[ $ass ]]; then
+#                                         ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
+#                                         subt="subtitulos.ass"
+#                                     else
+#                                         ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
+#                                         subt="subtitulos.srt"
+#                                     fi
+#                                 fi
+#                             fi
+#                         fi
+#                     fi
+#                 fi
                 
-    else
-        echo "no hay sub español"
-    fi
-        # ffmpeg -i $MiPelii -i /var/www/html/de/agua13.png -filter_complex \ "[0:v][1:v]overlay=main_w-overlay_w-1:1:enable=between(t\,30\,50),subtitles=subtitulos.srt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -metadata title=PelisHD24.com -codec:a copy S.$MiPelii.mp4
-        esubt=${subt##*.}
-        if [[ $esubt = "ass" ]]; then
-            ffmpeg -threads 4 -i $MiPelii -vf "ass=$subt" -c:v libx264 -crf 17 -strict -2 S.$MiPelii.mp4
-            er=$?
-            mv -- "S.$MiPelii.mp4" "SubPega"
-            if [[ $er = 0 ]]; then
-                rm $MiPelii
-                rm $subt
-            fi
-        else
-            # ffmpeg -threads 4 -i $MiPelii -i /var/www/html/de/agua13.png -filter_complex \
-            # "subtitles=$subt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -codec:a copy S.$MiPelii.mp4
-            ffmpeg -i $MiPelii -filter_complex \
-            "subtitles=$subt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -c:v libx264 -crf 17 -strict -2 S.$MiPelii.mp4
-            er=$?
-            mv "S.$MiPelii.mp4" SubPega
-            if [[ $er = 0 ]]; then
-                rm $MiPelii
-                rm $subt
-            fi
-        fi
+#     else
+#         echo "no hay sub español"
+#     fi
+#         # ffmpeg -i $MiPelii -i /var/www/html/de/agua13.png -filter_complex \ "[0:v][1:v]overlay=main_w-overlay_w-1:1:enable=between(t\,30\,50),subtitles=subtitulos.srt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -metadata title=PelisHD24.com -codec:a copy S.$MiPelii.mp4
+#         esubt=${subt##*.}
+#         if [[ $esubt = "ass" ]]; then
+#             ffmpeg -threads 4 -i $MiPelii -vf "ass=$subt" -c:v libx264 -crf 17 -strict -2 S.$MiPelii.mp4
+#             er=$?
+#             mv -- "S.$MiPelii.mp4" "SubPega"
+#             if [[ $er = 0 ]]; then
+#                 rm $MiPelii
+#                 rm $subt
+#             fi
+#         else
+#             # ffmpeg -threads 4 -i $MiPelii -i /var/www/html/de/agua13.png -filter_complex \
+#             # "subtitles=$subt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -codec:a copy S.$MiPelii.mp4
+#             ffmpeg -i $MiPelii -filter_complex \
+#             "subtitles=$subt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -c:v libx264 -crf 17 -strict -2 S.$MiPelii.mp4
+#             er=$?
+#             mv "S.$MiPelii.mp4" SubPega
+#             if [[ $er = 0 ]]; then
+#                 rm $MiPelii
+#                 rm $subt
+#             fi
+#         fi
                     
-    done
-        cd SubPega
-    fi
+#     done
+#         cd SubPega
+#     fi
 
 
-    if [[ $CSUB = 1 ]]; then
-    # dess download $LSUB
-        EXTSUB=${LSUB##*.}
-        if [[ $EXTSUB = "srt" || $EXTSUB = "vtt" ]]; then
-            wget $LSUB
-            echo "ETROOOOOOOO"
-        elif [[ $EXTSUB = "sbv" || $EXTSUB = "ass" ]]; then
-            wget $LSUB
-        else
-            p1=$(echo $LSUB | awk -F "~" '{print $1}')
-            p2=$(echo $p1 | sed 's/\/stream\//\/embed\//g')
-            mkdir subopenn && cd subopenn
-            #descarga del index
-            wget $p2
-            Err2=$?
-            if [[ $LSUB != "" ]]; then
-                LiimiteGD
-            fi
+#     if [[ $CSUB = 1 ]]; then
+#     # dess download $LSUB
+#         EXTSUB=${LSUB##*.}
+#         if [[ $EXTSUB = "srt" || $EXTSUB = "vtt" ]]; then
+#             wget $LSUB
+#             echo "ETROOOOOOOO"
+#         elif [[ $EXTSUB = "sbv" || $EXTSUB = "ass" ]]; then
+#             wget $LSUB
+#         else
+#             p1=$(echo $LSUB | awk -F "~" '{print $1}')
+#             p2=$(echo $p1 | sed 's/\/stream\//\/embed\//g')
+#             mkdir subopenn && cd subopenn
+#             #descarga del index
+#             wget $p2
+#             Err2=$?
+#             if [[ $LSUB != "" ]]; then
+#                 LiimiteGD
+#             fi
 
-            for i in * ; do
-                echo $i
-            done
+#             for i in * ; do
+#                 echo $i
+#             done
 
-            if fgrep "openload.co" $i ; then
-                echo "se encuentra"
-                subopen=$(grep -i "subtitle" $i | awk -F "\"" '{print $2}')
-                echo $subopen
-                cd ../
-                rm -rf subopenn
+#             if fgrep "openload.co" $i ; then
+#                 echo "se encuentra"
+#                 subopen=$(grep -i "subtitle" $i | awk -F "\"" '{print $2}')
+#                 echo $subopen
+#                 cd ../
+#                 rm -rf subopenn
 
-                #descargar del sud del index
-                wget $subopen
-            else
-                mv $i ../
-                cd ../
-                rm -rf subopenn
+#                 #descargar del sud del index
+#                 wget $subopen
+#             else
+#                 mv $i ../
+#                 cd ../
+#                 rm -rf subopenn
 
-            fi
-        fi
-    fi
+#             fi
+#         fi
+#     fi
 
-    if [[ `ls *.srt *.ass 2>/dev/null` ]]; then
-    for i in * ; do mv -- "${i}" "${i//['][!”#$%&’()*+,/:;<=>?@\^`{\|}~-']/_}" ; done 2>/dev/null
-    sleep 2
-    for f in * ; do mv "$f" "${f// /_}" ; done > /dev/null 2>> /root/log.txt
-    for g in * ; do mv "$g" "${g/"Copia de "/}" ; done > /dev/null 2>> /root/log.txt
-
-
-    for MiPelii in `ls *.mp4 *.mkv *.avi *.mpg`; do
-        echo $MiPelii
-    done 2>/dev/null
-
-        # for Subt in `ls *.ass`; do
-        #     echo "Subtitulo"
-        #     echo "$Subt"
-        #     mv "$Subt" SubtPegados.ass
-        # done 2>/dev/null
-        for Subt in `ls *.srt *.vtt *.sbv`; do
-            echo "Subtitulo"
-            echo "$Subt"
-            mv "$Subt" SubtPegados.srt
-        done 2>/dev/null
-
-        for Subt in `ls *.ssa *.ass`; do
-            echo "Subtitulo"
-            echo "$Subt"
-        done 2>/dev/null
-        sleep 2
+#     if [[ `ls *.srt *.ass 2>/dev/null` ]]; then
+#     for i in * ; do mv -- "${i}" "${i//['][!”#$%&’()*+,/:;<=>?@\^`{\|}~-']/_}" ; done 2>/dev/null
+#     sleep 2
+#     for f in * ; do mv "$f" "${f// /_}" ; done > /dev/null 2>> /root/log.txt
+#     for g in * ; do mv "$g" "${g/"Copia de "/}" ; done > /dev/null 2>> /root/log.txt
 
 
-        if [[ "${Subt##*.}" = "ass" || "${Subt##*.}" = "ssa" ]]; then
-            mv "$Subt" SubtPegados.ass
-            ffmpeg -i "$MiPelii" -vf "ass=SubtPegados.ass" -c:v libx264 -crf 17 -strict -2 S.$MiPelii
-        else
-            ffmpeg -i "$MiPelii" -filter_complex \ "subtitles=SubtPegados.srt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -codec:a copy "S.$MiPelii.mp4"
-        fi
+#     for MiPelii in `ls *.mp4 *.mkv *.avi *.mpg`; do
+#         echo $MiPelii
+#     done 2>/dev/null
+
+#         # for Subt in `ls *.ass`; do
+#         #     echo "Subtitulo"
+#         #     echo "$Subt"
+#         #     mv "$Subt" SubtPegados.ass
+#         # done 2>/dev/null
+#         for Subt in `ls *.srt *.vtt *.sbv`; do
+#             echo "Subtitulo"
+#             echo "$Subt"
+#             mv "$Subt" SubtPegados.srt
+#         done 2>/dev/null
+
+#         for Subt in `ls *.ssa *.ass`; do
+#             echo "Subtitulo"
+#             echo "$Subt"
+#         done 2>/dev/null
+#         sleep 2
+
+
+#         if [[ "${Subt##*.}" = "ass" || "${Subt##*.}" = "ssa" ]]; then
+#             mv "$Subt" SubtPegados.ass
+#             ffmpeg -i "$MiPelii" -vf "ass=SubtPegados.ass" -c:v libx264 -crf 17 -strict -2 S.$MiPelii
+#         else
+#             ffmpeg -i "$MiPelii" -filter_complex \ "subtitles=SubtPegados.srt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -codec:a copy "S.$MiPelii.mp4"
+#         fi
 
         
-        # ffmpeg -i $MiPelii -vf "subtitles=SubtPegados.srt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -c:a copy S.$MiPelii
-        #ffmpeg -i $MiPelii -vf "ass=SubtPegados.ass" -s hd720 -c:v libx264 -crf 22 -strict -2 S.$MiPelii    
-        #ffmpeg -i $MiPelii -vf "ass=SubtPegados.ass" -c:v libx264 -crf 20 -strict -2 S.$MiPelii    
-        #ffmpeg -i $MiPelii -vf "ass=SubtPegados.ass" -preset veryslow -strict -2 s.$MiPelii
-        Err3=$?
-        if [[ $Err3 = 0 ]]; then
-            echo "Archivos Eliminados"
-            rm $MiPelii
-            rm SubtPegados.srt
-        fi
-    fi
-}
+#         # ffmpeg -i $MiPelii -vf "subtitles=SubtPegados.srt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -c:a copy S.$MiPelii
+#         #ffmpeg -i $MiPelii -vf "ass=SubtPegados.ass" -s hd720 -c:v libx264 -crf 22 -strict -2 S.$MiPelii    
+#         #ffmpeg -i $MiPelii -vf "ass=SubtPegados.ass" -c:v libx264 -crf 20 -strict -2 S.$MiPelii    
+#         #ffmpeg -i $MiPelii -vf "ass=SubtPegados.ass" -preset veryslow -strict -2 s.$MiPelii
+#         Err3=$?
+#         if [[ $Err3 = 0 ]]; then
+#             echo "Archivos Eliminados"
+#             rm $MiPelii
+#             rm SubtPegados.srt
+#         fi
+#     fi
+# }
 function ElimSub()
 { 
-    SIHAY=$(ffmpeg -i $MiPeli 2>&1 | grep -i Subtitle | wc -l)
-    if [[ $SIHAY = 0 ]];then
-        mkvmerge -o sin_sub.$MiPeli --no-subtitles $MiPeli; 
-        [[ -e sin_sub.$MiPeli ]] && rm $MiPeli
-        mv sin_sub.$MiPeli $MiPeli
+    SIHAY=$(ffmpeg -i "${MiPeli}" 2>&1 | grep -i Subtitle | wc -l)
+    if [[ "$SIHAY" != 0 ]];then
+        msg -ama "Eliminando Subtitulos..."
+        mkvmerge -o "sin_sub.${MiPeli}" --no-subtitles "${MiPeli}"; 
+        [[ -e "sin_sub.${MiPeli}" ]] && rm "${MiPeli}"
+        mv "sin_sub.${MiPeli}" "${MiPeli}"
         msg -ama "Subtitulos Borrados"
     else
         msg -ama "No hay subtitulos para eliminar"
@@ -1889,7 +1890,7 @@ fi
     
 
     [[ $ELIMINARSUB == true ]] && ElimSub
-
+    
     
 
     #[T3.Ep6]
@@ -2142,8 +2143,8 @@ function sudmenu() {
     until [[ $v = $t ]]; do
         echo $t ; sleep 10
         msg -ama "${MiPeli}"
-        msg -ama "Esperando que todos los Serv Terminen"
-        echo -e "\033[0;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+        msg -ama "Esperando que todos los Serv Terminen de3"
+        echo -e "\033[0;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
         jobs -l
         t=$(jobs -l)
     done
@@ -2179,57 +2180,57 @@ function sudmenu() {
     else
     echo "ERROR CON LAS PLANTILLAS"
     fi
-        while :
-        do
-        #printf "${RED}";
-        #if [[ $menu_principall = 1 ]]; then
-            #    CrearLinkVIP > $RUTA2/VIP:_$MiPeli.txt
-            #    CrearLinksFREE > $RUTA2/ZFREE:_$MiPeli.txt
-            #    plantilla > $RUTA3/ADD:_$MiPeli.txt.php
-            #fi
+        # while :
+        # do
+        # #printf "${RED}";
+        # #if [[ $menu_principall = 1 ]]; then
+        #     #    CrearLinkVIP > $RUTA2/VIP:_$MiPeli.txt
+        #     #    CrearLinksFREE > $RUTA2/ZFREE:_$MiPeli.txt
+        #     #    plantilla > $RUTA3/ADD:_$MiPeli.txt.php
+        #     #fi
 
 
 
 
-            echo -e "\033[1;34m=================================================\033[0m"
-            # echo -e "\033[0;35m[1]\033[0m \033[1;31m>\033[0m VER ENLACES"
-            echo -e "\033[0;35m[1]\033[0m \033[1;31m>\033[0m SALIR!!"
-            exit
-            # echo -e "\033[0;35m[2]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR A OPENLOAD, STREAMANGO, STREAMCHERRY"
-            # echo -e "\033[0;35m[3]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR A OPENLOAD"
-            # echo -e "\033[0;35m[4]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR A STREANMANGO"
-            # echo -e "\033[0;35m[5]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR A STREAMCHERRY"
-            # echo -e "\033[0;35m[6]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR A GDRIVE"
-            # echo -e "\033[0;35m[7]\033[0m \033[1;31m>\033[0m SALIR Y BORRAR"
-            # echo -e "\033[0;35m[8]\033[0m \033[1;31m>\033[0m MOSTRAR ARCHIVOS"
-            # echo -e "\033[0;35m[9]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR VIP"
-            # echo -e "\033[0;35m[10]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR FEMBED"
-            # echo -e "\033[0;35m[11]\033[0m \033[1;31m>\033[0m VER ESPACIO MEGA"
-            # echo -e "\033[0;35m[12]\033[0m \033[1;31m>\033[0m VER LINK MEGA"
-            # echo -e "\033[0;35m[13]\033[0m \033[1;31m>\033[0m VER TODOS LOS LINKS MEGA"
-            # echo -e "\033[0;35m[14]\033[0m \033[1;31m>\033[0m SALIR!!"
-            echo -e "\033[1;34m=================================================\033[0m"
-            read borrarr
-            case $borrarr in
-                # 1) enlacesMG; sleep 30s; exit ;; 
-                # 2) subida_o_s_s_todos ;; 
-                # 3) subida_o_s_s_todos1 ;;
-                # 4) subida_o_s_s_todos2 ;;
-                # 5) subida_o_s_s_todos3 ;;
-                # 6) subida_drive_todos ;;
-                # 7) rm -rf * > 2 /dev/null; exit ;;
-                # 8) pwd; ls -ls ;;
-                # 9) gdtxt ;;
-                # 10) subi14 ;;
-                # 11) megadf --human;;
-                # 12) linkmega ;;
-                # 13) megals -e ;;
-                14) exit 1 ;;
-                *) echo "OPCION INVALIDAD.";
-                echo "Presiona una tecla para continuar...";
-                read foo;;
-            esac
-        done
+        #     echo -e "\033[1;34m=================================================\033[0m"
+        #     # echo -e "\033[0;35m[1]\033[0m \033[1;31m>\033[0m VER ENLACES"
+        #     echo -e "\033[0;35m[1]\033[0m \033[1;31m>\033[0m SALIR!!"
+        #     exit
+        #     # echo -e "\033[0;35m[2]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR A OPENLOAD, STREAMANGO, STREAMCHERRY"
+        #     # echo -e "\033[0;35m[3]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR A OPENLOAD"
+        #     # echo -e "\033[0;35m[4]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR A STREANMANGO"
+        #     # echo -e "\033[0;35m[5]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR A STREAMCHERRY"
+        #     # echo -e "\033[0;35m[6]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR A GDRIVE"
+        #     # echo -e "\033[0;35m[7]\033[0m \033[1;31m>\033[0m SALIR Y BORRAR"
+        #     # echo -e "\033[0;35m[8]\033[0m \033[1;31m>\033[0m MOSTRAR ARCHIVOS"
+        #     # echo -e "\033[0;35m[9]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR VIP"
+        #     # echo -e "\033[0;35m[10]\033[0m \033[1;31m>\033[0m VOLVER A SUBIR FEMBED"
+        #     # echo -e "\033[0;35m[11]\033[0m \033[1;31m>\033[0m VER ESPACIO MEGA"
+        #     # echo -e "\033[0;35m[12]\033[0m \033[1;31m>\033[0m VER LINK MEGA"
+        #     # echo -e "\033[0;35m[13]\033[0m \033[1;31m>\033[0m VER TODOS LOS LINKS MEGA"
+        #     # echo -e "\033[0;35m[14]\033[0m \033[1;31m>\033[0m SALIR!!"
+        #     echo -e "\033[1;34m=================================================\033[0m"
+        #     read borrarr
+        #     case $borrarr in
+        #         # 1) enlacesMG; sleep 30s; exit ;; 
+        #         # 2) subida_o_s_s_todos ;; 
+        #         # 3) subida_o_s_s_todos1 ;;
+        #         # 4) subida_o_s_s_todos2 ;;
+        #         # 5) subida_o_s_s_todos3 ;;
+        #         # 6) subida_drive_todos ;;
+        #         # 7) rm -rf * > 2 /dev/null; exit ;;
+        #         # 8) pwd; ls -ls ;;
+        #         # 9) gdtxt ;;
+        #         # 10) subi14 ;;
+        #         # 11) megadf --human;;
+        #         # 12) linkmega ;;
+        #         # 13) megals -e ;;
+        #         14) exit 1 ;;
+        #         *) echo "OPCION INVALIDAD.";
+        #         echo "Presiona una tecla para continuar...";
+        #         read foo;;
+        #     esac
+        # done
 
 }
 

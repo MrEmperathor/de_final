@@ -327,16 +327,19 @@ function subida_mega_series() {
                         let A++
                         echo
                         echo -e "\033[1;32mCUENTA LLENA...PASAREMOS A LA CUENTA $CUENTAMEGA EN UN MOMENTO!! :)\033[0m"
-                        sleep 3
-
-                        sed '2d' $MEGARC > $MEGARC2; sed -i "2i Username = $CUENTAMEGA" $MEGARC2; rm -rf $MEGARC; mv $MEGARC2 $MEGARC
                         sleep 1
-                        UPDATECUENTA=$(cat $MEGARC | sed -n '2p' | awk -F " " '{printf $3}')
-                        MEGAESP=$(megadf --human | sed -n '3p')
+                        if [[ -n "${CUENTAMEGA}" ]]; then
+                            SPACEM=$(megadf -h -u "${CUENTAMEGA}" -p "${PMEGA}" | awk -F "Free:  " '{printf $2}')
+                            [[ $SPACEM = "0 bytes" ]] && continue
+                            sed '2d' $MEGARC > $MEGARC2; sed -i "2i Username = $CUENTAMEGA" $MEGARC2; rm -rf $MEGARC; mv $MEGARC2 $MEGARC
+                            sleep 1
+                            UPDATECUENTA=$(cat $MEGARC | sed -n '2p' | awk -F " " '{printf $3}')
+                            MEGAESP=$(megadf --human | sed -n '3p')
                             if [[ $MEGAESP != $MEGAESP1 ]]; then
                                 echo -e "\033[1;36mPERFECTO LA CUENTA \033[1;31m$UPDATECUENTA\033[0m ESTA DISPONIBLE!\033[0m"
                                 break
                             fi
+                        fi
 
                     done < "$listamega"
                 #sed -n "$Ap" $listamega > $listamega1; CUENTAMEGA=$(cat "$listamega1")
@@ -1447,367 +1450,6 @@ function aguaMarca()
         fi
     done 2>/dev/null
 }
-
-# function EscogerAudio(){
-
-#     if [[ $ACTIVARAUDIO ]]; then
-        
-#         for i in * ; do mv -- "${i}" "${i//['][!”#$%&’()*+,/ :;<=>?@\^`{\|}~-']/_}" ; done 2>/dev/null
-
-#         if [[ $ELEGIRAUDIO = 1 ]]; then
-#             carpet="LATINO"
-#         elif [[ $ELEGIRAUDIO = 2 ]]; then
-#             carpet="ESPANOL"
-#         elif [[ $ELEGIRAUDIO = 3 ]]; then
-#             carpet="INGLES"
-#         fi
-
-#         mkdir -p "$carpet"
-#         for c in `ls *.mkv *.mp4 *.avi *.mpg`; do
-        
-
-#             cc=$(ffmpeg -i $c 2>&1 | awk '/Audio/,/title/')
-#             if [[ $ELEGIRAUDIO = 1 ]]; then
-                
-#                 array_lat=("Latino" "Latin" "Mexico")
-#                 for (( i = 0; i < "${#array_lat[@]}"; i++ )); do
-#                     AUDIOT=$(ffprobe $c 2>&1 | awk '/Audio/,/title/' | grep -B 2 "${array_lat[$i]}" | awk -F ":" '{print $2}')
-#                     if [[ $AUDIOT ]]; then
-#                         break
-#                     fi
-#                 done
-
-#                 if [[ $AUDIOT ]]; then
-#                     msg -azu ".:el idioma es latino:.."
-#                     mkvmerge -o $c.LAT.mkv -a "${AUDIOT::1}" "$c"
-#                     err=$?
-#                     ComprobarExtAudio "$c"
-#                     mv "$c.LAT.mkv" "$c"; mv "$c" "$carpet"
-
-#                 else
-#                     array_lat2=("lat" "spa" "default" "eng" "und")
-#                     for (( i = 0; i < "${#array_lat2[@]}"; i++ )); do
-#                         NFLUJO=$(echo "$cc" | grep -i "Audio" | grep -i "${array_lat2[$i]}")
-#                         if [[ $NFLUJO =~ "eng" ]]; then
-
-#                             NFLUJON=$(echo "$cc" | awk "! /eng/ { print $1 $2}" | grep -i "Stream" | awk -F ":" '{print $2}')
-#                             break
-#                         elif [[ $NFLUJO =~ "und" ]]; then
-#                                 NFLUJON=$(echo "$cc" | awk "! /und/ { print $1 $2}" | grep -i "Stream" | awk -F ":" '{print $2}')
-
-
-#                         else
-#                             if [[ $NFLUJO ]]; then
-#                                 NFLUJO2=$(echo "$cc" | grep -i "Audio" | grep -i "${array_lat2[$i]}" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
-#                                 break
-#                             fi
-#                         fi
-#                     done
-
-#                         if [[ $NFLUJO2 ]]; then
-#                             msg -azu ".:el idioma es latino:.."
-#                             mkvmerge -o $c.LAT.mkv -a "${NFLUJO2::1}" "$c"
-#                             err=$?
-#                             ComprobarExtAudio "$c"
-#                             mv "$c.LAT.mkv" "$c"; mv "$c" "$carpet"
-
-#                         elif [[ $NFLUJON ]]; then
-#                             msg -azu ".:el idioma es latino:..INVERSO"
-#                             # NFLUJON=$(echo "$cc" | awk '/Audio/,/title/' | awk "! /eng/ { print $1 $2}" | grep -i "Stream" | awk -F ":" '{print $2}')
-#                             NFLUJON=$(echo "$cc" | awk '/Audio/,/title/' | grep -v "${array_lat2[$i]}" | grep -i "Stream" | awk -F ":" '{print $2}')
-#                             mkvmerge -o $c.LAT.mkv -a "${NFLUJON::1}" "$c"
-#                             err=$?
-#                             ComprobarExtAudio "$c"
-#                             mv "$c.LAT.mkv" "$c"; mv "$c" "$carpet"
-#                         fi
-#                 fi
-
-
-
-#                 #Audio español
-#                 elif [[ $ELEGIRAUDIO = 2 ]]; then
-#                     array_esp=("España" "Español" "Espanol" "Castellano")
-#                     for (( i = 0; i < "${#array_esp[@]}"; i++ )); do
-#                         AUDIOT_ESP=$(ffprobe $c 2>&1 | awk '/Audio/,/title/' | grep -B 2 "${array_esp[$i]}" | awk -F ":" '{print $2}')
-#                         if [[ $AUDIOT_ESP ]]; then
-#                             break
-#                         fi
-#                     done
-
-#                     if [[ $AUDIOT_ESP ]]; then
-#                         msg -azu ".:el idioma es Castellano:.."
-#                         mkvmerge -o $c.ESP.mkv -a "${AUDIOT_ESP::1}" "$c"
-#                         err=$?
-#                         ComprobarExtAudio "$c"
-#                         mv "$c.ESP.mkv" "$c"; mv "$c" "$carpet"
-
-
-#                         else
-#                             array_esp2=("spa")
-#                             for (( i = 0; i < "${#array_esp2[@]}"; i++ )); do
-#                                 NFLUJO=$(echo "$cc" | grep -i "${array_esp2[$i]}" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
-#                                 if [[ $NFLUJO ]]; then
-#                                     break
-#                                 fi
-#                             done
-#                             if [[ $NFLUJO ]]; then
-#                             	msg -azu ".:el idioma es Castellano:.."
-#                                 mkvmerge -o $c.ESP.mkv -a "${NFLUJO::1}" "$c"
-#                                 err=$?
-#                                 ComprobarExtAudio "$c"
-#                                 mv "$c.ESP.mkv" "$c"; mv "$c" "$carpet"
-#                             fi
-#                     fi
-
-
-
-#                     #audio ingles
-#             elif [[ $ELEGIRAUDIO = 3 ]]; then
-#                 array_ing=("Ingles" "english")
-#                 for (( i = 0; i < "${#array_ing[@]}"; i++ )); do
-#                     AUDIOT_ING=$(ffprobe $c 2>&1 | awk '/Audio/,/title/' | grep -B 2 "${array_ing[$i]}" | awk -F ":" '{print $2}')
-#                     if [[ $AUDIOT_ING ]]; then
-#                         break
-#                     fi
-#                 done
-                    
-#                     if [[ $AUDIOT_ING ]]; then
-#                         msg -azu ".:el idioma es Ingles:.."
-#                         mkvmerge -o $c.SUB.mkv -a "${AUDIOT_ING::1}" "$c"
-#                         err=$?
-#                         ComprobarExtAudio "$c"
-#                         mv "$c.SUB.mkv" "$c"; mv "$c" "$carpet"
-#                         else
-
-#                             array_ing2=("eng" "und")
-#                             for (( i = 0; i < "${#array_ing2[@]}"; i++ )); do
-#                                 NFLUJO=$(echo "$cc" | grep -i "${array_ing2[$i]}" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
-#                                 if [[ $NFLUJO ]]; then
-#                                     break
-#                                 fi
-#                             done
-
-#                             if [[ $NFLUJO ]]; then
-#                                 msg -pur ".:el idioma es Ingles:.."
-#                                 mkvmerge -o $c.SUB.mkv -a "${NFLUJO::1}" "$c"
-#                                 err=$?
-#                                 ComprobarExtAudio "$c"
-#                                 mv "$c.SUB.mkv" "$c"; mv "$c" "$carpet"
-#                             fi
-#                     fi
-#             fi
-
-#         done 2>/dev/null
-#         cd $carpet
-#         # [[ -n `ls ${carpet}/` ]] && cd $carpet || rm -rf $carpet
-#         msg -ama "audio extraido"
-#     fi
-    
-# }
-
-# function PegarSubtitulos(){
-
-    
-# # ffmpeg -i cobra.mkv -ss 00:15:03 -t 00:00:30 -c:v copy -c:a copy nuerte60.mp4
-# if [[ $EXTRASUB ]]; then
-# 	echo "EXTRALLENDO SUBS"
-# 	for f in * ; do mv "$f" "${f// /_}" ; done 2>/dev/null
-# 	for g in * ; do mv "$g" "${g/"Copia de "/}" ; done 2>/dev/null
-# 	for i in * ; do mv -- "${i}" "${i//['][!”#$%&’ ()*+,/:;<=>?@\^`{\|}~-']/_}" ; done 2>/dev/null
-# 	mkdir SubPega
-
-# 	for MiPelii in `ls *.mp4 *.mkv *.avi *.mpg`; do
-# 		echo $MiPelii
-# 		NFLUJO0=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | wc -l)
-
-# 		if [[ $NFLUJO0 = 1 ]]; then
-# 			NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
-# 			ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-# 			if [[ $ass ]]; then
-# 			    ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
-# 			    subt="subtitulos.ass"
-# 			else
-# 			    ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
-# 			    subt="subtitulos.srt"
-# 			fi
-# 		elif [[ $NFLUJO0 = 2 ]]; then
-# 		    NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i spa | grep -i subrip | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
-# 		    NC=$(echo $NFLUJO | wc -w)
-# 			if [[ $NC = 1 ]]; then
-# 		        ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-# 		        if [[ $ass ]]; then
-# 		            ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
-# 		            subt="subtitulos.ass"
-# 		        else
-# 		            ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
-# 		            subt="subtitulos.srt"
-# 		        fi
-# 			fi
-# 			if [[ ! $NFLUJO ]]; then
-# 				echo "no hay flujo"
-# 				NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -v eng | grep -i subrip | awk -F ":" '{print $2}' | awk -F "(" '{print $1}')
-# 				NC=$(echo $NFLUJO | wc -w)
-# 				if [[ $NC = 1 ]]; then
-# 				    ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-# 				    if [[ $ass ]]; then
-# 				        ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
-# 				        subt="subtitulos.ass"
-# 				    else
-# 				        ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
-# 				        subt="subtitulos.srt"
-# 				    fi
-# 				fi
-# 				if [[ $NC = 2 ]]; then
-# 				    echo "NC 2"
-# 				    NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -v und | grep -i subrip | awk -F ":" '{print $2}' | awk -F "(" '{print $1}')
-# 				    NC=$(echo $NFLUJO | wc -w)
-# 				    if [[ $NC = 1 ]]; then
-# 				    	ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-# 				        if [[ $ass ]]; then
-# 				            ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
-# 				            subt="subtitulos.ass"
-# 				        else
-# 				            ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
-# 				            subt="subtitulos.srt"
-# 				        fi
-# 			    	else
-# 				        NFLUJO=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -v "(forced)" | awk -F ":" '{print $2}' | awk -F "(" '{print $1}')
-# 				        NC=$(echo $NFLUJO | wc -w)
-# 				        echo $NC
-# 				        if [[ $NC = 1 ]]; then
-# 				            ass=$(ffmpeg -i $MiPelii 2>&1 | grep -i Subtitle | grep -i ass | awk '{print $4}')
-# 				            if [[ $ass ]]; then
-# 				                ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s ass subtitulos.ass -y
-# 				                subt="subtitulos.ass"
-# 				            else
-# 				                ffmpeg -i $MiPelii -map 0:$NFLUJO -codec:s srt subtitulos.srt -y
-# 				                subt="subtitulos.srt"
-# 				            fi
-# 				        fi
-# 			    	fi
-# 				fi
-# 			fi
-# else
-# 	echo "no hay sub español"
-# fi
-#     # ffmpeg -i $MiPelii -i /var/www/html/de/agua13.png -filter_complex \ "[0:v][1:v]overlay=main_w-overlay_w-1:1:enable=between(t\,30\,50),subtitles=subtitulos.srt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -metadata title=PelisHD24.com -codec:a copy S.$MiPelii.mp4
-#     esubt=${subt##*.}
-#     if [[ $esubt = "ass" ]]; then
-#         ffmpeg -threads 4 -i $MiPelii -vf "ass=$subt" -c:v libx264 -crf 17 -strict -2 S.$MiPelii.mp4
-#         er=$?
-#         mv -- "S.$MiPelii.mp4" "SubPega"
-#         if [[ $er = 0 ]]; then
-#             rm $MiPelii
-#             rm $subt
-#         fi
-#     else
-#         # ffmpeg -threads 4 -i $MiPelii -i /var/www/html/de/agua13.png -filter_complex \
-#         # "subtitles=$subt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -codec:a copy S.$MiPelii.mp4
-#         ffmpeg -i $MiPelii -filter_complex \
-#          "subtitles=$subt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -c:v libx264 -crf 17 -strict -2 S.$MiPelii.mp4
-#         er=$?
-#         mv "S.$MiPelii.mp4" SubPega
-#         if [[ $er = 0 ]]; then
-#             rm $MiPelii
-#             rm $subt
-#         fi
-#     fi
-                
-# done
-#     cd SubPega
-# fi
-
-
-# if [[ $CSUB = 1 ]]; then
-# # dess download $LSUB
-#     EXTSUB=${LSUB##*.}
-#     if [[ $EXTSUB = "srt" || $EXTSUB = "vtt" ]]; then
-#         wget $LSUB
-#         echo "ETROOOOOOOO"
-#     elif [[ $EXTSUB = "sbv" || $EXTSUB = "ass" ]]; then
-#         wget $LSUB
-#     else
-#         p1=$(echo $LSUB | awk -F "~" '{print $1}')
-#         p2=$(echo $p1 | sed 's/\/stream\//\/embed\//g')
-#         mkdir subopenn && cd subopenn
-#         #descarga del index
-#         wget $p2
-#         Err2=$?
-#         if [[ $LSUB != "" ]]; then
-#             LiimiteGD
-#         fi
-
-#         for i in * ; do
-#             echo $i
-#         done
-
-#         if fgrep "openload.co" $i ; then
-#             echo "se encuentra"
-#             subopen=$(grep -i "subtitle" $i | awk -F "\"" '{print $2}')
-#             echo $subopen
-#             cd ../
-#             rm -rf subopenn
-
-#             #descargar del sud del index
-#             wget $subopen
-#         else
-#             mv $i ../
-#             cd ../
-#             rm -rf subopenn
-
-#         fi
-# 	fi
-# fi
-
-# if [[ `ls *.srt *.ass 2>/dev/null` ]]; then
-# for i in * ; do mv -- "${i}" "${i//['][!”#$%&’()*+,/:;<=>?@\^`{\|}~-']/_}" ; done 2>/dev/null
-# sleep 2
-# for f in * ; do mv "$f" "${f// /_}" ; done > /dev/null 2>> /root/log.txt
-# for g in * ; do mv "$g" "${g/"Copia de "/}" ; done > /dev/null 2>> /root/log.txt
-
-
-# for MiPelii in `ls *.mp4 *.mkv *.avi *.mpg`; do
-#     echo $MiPelii
-# done 2>/dev/null
-
-#     # for Subt in `ls *.ass`; do
-#     #     echo "Subtitulo"
-#     #     echo "$Subt"
-#     #     mv "$Subt" SubtPegados.ass
-#     # done 2>/dev/null
-#     for Subt in `ls *.srt *.vtt *.sbv`; do
-#         echo "Subtitulo"
-#         echo "$Subt"
-#         mv "$Subt" SubtPegados.srt
-#     done 2>/dev/null
-
-#     for Subt in `ls *.ssa *.ass`; do
-#         echo "Subtitulo"
-#         echo "$Subt"
-#     done 2>/dev/null
-#     sleep 2
-
-
-#     if [[ "${Subt##*.}" = "ass" || "${Subt##*.}" = "ssa" ]]; then
-#     	mv "$Subt" SubtPegados.ass
-#     	ffmpeg -i $MiPelii -vf "ass=SubtPegados.ass" -c:v libx264 -crf 20 -strict -2 S.$MiPelii
-#     else
-#     	ffmpeg -i $MiPelii -i /var/www/html/de/agua13.png -filter_complex \ "subtitles=SubtPegados.srt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -codec:a copy S.$MiPelii.mp4
-#     fi
-
-    
-# # ffmpeg -i $MiPelii -vf "subtitles=SubtPegados.srt:force_style='Fontsize=22,PrimaryColour=&H00ffff&'" -c:a copy S.$MiPelii
-# #ffmpeg -i $MiPelii -vf "ass=SubtPegados.ass" -s hd720 -c:v libx264 -crf 22 -strict -2 S.$MiPelii    
-# #ffmpeg -i $MiPelii -vf "ass=SubtPegados.ass" -c:v libx264 -crf 20 -strict -2 S.$MiPelii    
-# #ffmpeg -i $MiPelii -vf "ass=SubtPegados.ass" -preset veryslow -strict -2 s.$MiPelii
-# Err3=$?
-# if [[ $Err3 = 0 ]]; then
-#     echo "Archivos Eliminados"
-#     rm $MiPelii
-#     rm SubtPegados.srt
-# fi
-# fi
-# }
 function ElimSub()
 { 
     SIHAY=$(ffmpeg -i $MiPeli 2>&1 | grep -i Subtitle | wc -l)
@@ -2060,17 +1702,41 @@ function Uptobox1_series()
     unset upName; unset UptTV
     i=1
     upName=(`ls ${RD}/${R_CARPETA_SERIE}`)
+    local admin="${1}"
     mul; ProgressBar
-    for (( i = 0; i < "${#upName[@]}"; i++ )); do
-        UptTV[$i]=$($Uptoboxx "${RD}/${R_CARPETA_SERIE}/${upName[$i]}")
-        # msg -ama "LO QUE PASO: ${UptTV[$i]}"
-        # comprobarEstadoNetu "${RD}/${R_CARPETA_SERIE}/${upName[$i]}" "${UptTV[$i]}" "https://uptobox.com" "$Uptoboxx" linkSalida; UptTV[$i]=${linkSalida}
-        errorUP=$?
-        MostarEnlaces "Uptobox" ${UptTV[$i]} $errorUP "${upName[$i]}" 
-        sleep 3
-        [[ $i -eq $b ]] && sleep 10 && mul
-    done
-    kill $!
+    if [[ -z "${admin}" ]];then
+        for (( i = 0; i < "${#upName[@]}"; i++ )); do
+            UptTV[$i]=$($Uptoboxx "${RD}/${R_CARPETA_SERIE}/${upName[$i]}")
+            # msg -ama "LO QUE PASO: ${UptTV[$i]}"
+            # comprobarEstadoNetu "${RD}/${R_CARPETA_SERIE}/${upName[$i]}" "${UptTV[$i]}" "https://uptobox.com" "$Uptoboxx" linkSalida; UptTV[$i]=${linkSalida}
+            errorUP=$?
+            MostarEnlaces "Uptobox" ${UptTV[$i]} $errorUP "${upName[$i]}" 
+            sleep 3
+            [[ $i -eq $b ]] && sleep 10 && mul
+        done
+        kill $!
+    else
+        for (( i = 0; i < "${#upName[@]}"; i++ )); do
+            UptTV[$i]=$($Uptoboxmi "${RD}/${R_CARPETA_SERIE}/${upName[$i]}")
+            # msg -ama "LO QUE PASO: ${UptTV[$i]}"
+            # comprobarEstadoNetu "${RD}/${R_CARPETA_SERIE}/${upName[$i]}" "${UptTV[$i]}" "https://uptobox.com" "$Uptoboxx" linkSalida; UptTV[$i]=${linkSalida}
+            errorUP=$?
+            MostarEnlaces "Uptobox" ${UptTV[$i]} $errorUP "${upName[$i]}" 
+            sleep 3
+            [[ $i -eq $b ]] && sleep 10 && mul
+        done
+        kill $!
+    fi
+    # for (( i = 0; i < "${#upName[@]}"; i++ )); do
+    #     UptTV[$i]=$($Uptoboxx "${RD}/${R_CARPETA_SERIE}/${upName[$i]}")
+    #     # msg -ama "LO QUE PASO: ${UptTV[$i]}"
+    #     # comprobarEstadoNetu "${RD}/${R_CARPETA_SERIE}/${upName[$i]}" "${UptTV[$i]}" "https://uptobox.com" "$Uptoboxx" linkSalida; UptTV[$i]=${linkSalida}
+    #     errorUP=$?
+    #     MostarEnlaces "Uptobox" ${UptTV[$i]} $errorUP "${upName[$i]}" 
+    #     sleep 3
+    #     [[ $i -eq $b ]] && sleep 10 && mul
+    # done
+    # kill $!
     for i in "${UptTV[@]}"; do echo $i; done
 }
 function Gounlimited_series()
@@ -2096,14 +1762,28 @@ function fembed_series()
 {
     unset upName; unset gouTV; unset datoFembed; unset fembedTVV; unset fembedTV
     i=1; ruu=$(pwd)
+    ruta_cache="/var/www/html/panel2/panel/inc/include/fembed/fembed_cache/"
+    rm "${ruta_cache}"* 2>/dev/null
     local upName=(`ls ${RD}/${R_CARPETA_SERIE}`)
     mul; 
     # ProgressBar
     for (( i = 0; i < "${#upName[@]}"; i++ )); do
-    
+        rm "${ruta_cache}"* 2>/dev/null
         local datoFembed[$i]=$($SFembed "${R_CARPETA_SERIE}/${upName[$i]}")
         local fembedTVV[$i]=$(echo "${datoFembed[$i]}" | awk -F 'Fembed ID: ' '{print $2}')
         local fembedTVV[$i]=`echo ${fembedTVV[$i]} | sed 's/ *$//g'`
+        uno=1
+        if [ -z "${fembedTVV[$i]}" ]; then
+            until [ -n "${fembedTVV[$i]}" ]; do
+                rm "${ruta_cache}"* 2>/dev/null
+                msg -ama "entrada #$uno"
+                local datoFembed[$i]=$($SFembed "${R_CARPETA_SERIE}/${upName[$i]}")
+                local fembedTVV[$i]=$(echo "${datoFembed[$i]}" | awk -F 'Fembed ID: ' '{print $2}')
+                local fembedTVV[$i]=`echo ${fembedTVV[$i]} | sed 's/ *$//g'`
+                ((uno++))
+            done
+        fi
+        
         # msg -ama "LO QUE PASO 1: ${fembedTVV[$i]}"
 
         [[ -n "${fembedTVV[$i]}" ]] && fembedTV[$i]="https://fembed.com/f/${fembedTVV[$i]}"
@@ -2309,8 +1989,12 @@ function subida_o_s_s_1080_series()
         sleep 2
 
         echo -e "\n"
-        echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOX\033[0m"
+        echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOX\033[0m" 
         Uptobox1_series
+
+        echo -e "\n"
+        echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOXMI\033[0m" 
+        Uptobox1_series "admin"
 
         # echo -e "\n"
         # echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mGD FREE\033[0m" 
@@ -2325,16 +2009,16 @@ function subida_o_s_s_1080_series()
         echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mMEGA\033[0m" 
         MegaSerie
 
-    if [[ $enlaces_free1 ]];then
-        echo -e "\033[1;36mOBTENIENDO ENLACES DE \033[0m \033[1;33mOUO\033[0m"
-        Acortadorr_series enlaces_free1[@] $SOUO ENLACESOUO "OUO"
-        Acortadorr_series ENLACESOUO[@] $SOUO ENLACESOUO "OUO"
-    fi
+    # if [[ $enlaces_free1 ]];then
+    #     echo -e "\033[1;36mOBTENIENDO ENLACES DE \033[0m \033[1;33mOUO\033[0m"
+    #     Acortadorr_series enlaces_free1[@] $SOUO ENLACESOUO "OUO"
+    #     Acortadorr_series ENLACESOUO[@] $SOUO ENLACESOUO "OUO"
+    # fi
 
-    if [[ $MEGAENLACES ]];then
-        echo -e "\033[1;36mOBTENIENDO ENLACES DE \033[0m \033[1;33mSHORT\033[0m"
-        Acortadorr_series MEGAENLACES[@] $SSHORT ENLACESSHORT "SHORT"
-    fi
+    # if [[ $MEGAENLACES ]];then
+    #     echo -e "\033[1;36mOBTENIENDO ENLACES DE \033[0m \033[1;33mSHORT\033[0m"
+    #     Acortadorr_series MEGAENLACES[@] $SSHORT ENLACESSHORT "SHORT"
+    # fi
 }
 function subida_o_s_s_720_series() 
 {
@@ -2362,6 +2046,10 @@ function subida_o_s_s_720_series()
         fembed_series
         sleep 2
 
+        echo -e "\n"
+        echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOXMI\033[0m" 
+        Uptobox1_series "admin"
+
         # echo -e "\n"
         # echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mGOUNLIMITED\033[0m"
         # Gounlimited_series
@@ -2387,10 +2075,10 @@ function subida_o_s_s_720_series()
         Acortadorr_series enlaces_free1[@] $SOUO ENLACESOUO "OUO"
     fi
 
-    if [[ $MEGAENLACES ]];then
-        echo -e "\033[1;36mOBTENIENDO ENLACES DE \033[0m \033[1;33mSHORT\033[0m"
-        Acortadorr_series MEGAENLACES[@] $SSHORT ENLACESSHORT "SHORT"
-    fi
+    # if [[ $MEGAENLACES ]];then
+    #     echo -e "\033[1;36mOBTENIENDO ENLACES DE \033[0m \033[1;33mSHORT\033[0m"
+    #     Acortadorr_series MEGAENLACES[@] $SSHORT ENLACESSHORT "SHORT"
+    # fi
 }
 
 
@@ -2654,6 +2342,10 @@ function drive3() {
     {
         if [[ $host != "www.viki.com" && $host != "viki.com" ]]; then
             PegarSubtitulos
+            #pegar marca de agua
+            echo "esta es mi sub: ${EXTRASUB}"
+            echo "esta es mi marca: ${MARCA_AGUA}"
+            [[ -z "${EXTRASUB}" && -n "${MARCA_AGUA}" ]] && pegarLogo
         fi
     }
 
@@ -2676,7 +2368,8 @@ function drive3() {
                 viki_o_no $K
                 [[ $host == "viki.com" || $host == "www.viki.com" ]] && ((EPI++))
                 [[ $opcion1 == 4 && $temp -gt 1 ]] && pausaParaElBug 15
-                [[ $opcion1 == 3 && $temp -gt 1 && $host != "drive.google.com" && $host != "mega.nz" ]] && pausaParaElBug 30
+                # [[ $opcion1 == 3 && $temp -gt 1 && $host != "drive.google.com" && $host != "mega.nz" && $host =~ "googleusercontent.com" ]] && pausaParaElBug 30
+                [[ $opcion1 == 3 && $temp -gt 1 && $host == "uptobox.com" ]] && pausaParaElBug 30
                 [[ $opcion1 == 2 && $temp -gt 1 ]] && pausaParaElBug 15
                 [[ $opcion1 == 1 && $temp -gt 1 ]] && pausaParaElBug 15
                 # drivego $K
