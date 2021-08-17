@@ -42,7 +42,9 @@ switch ($datoBuscar) {
     case 'ouo.io':
         $dato = 'ouo.io';
         break;
-
+    case 'formatearwindows.net':
+            $dato = 'formatearwindows.net';
+            break;
     default:
         echo "No existe dato a buscar";
         break;

@@ -170,14 +170,16 @@ while getopts "c:t:n:e:i:s:a:p:o:m:L:F:C:I:K:V:T:R:E:" optname
             ;;
         "c")
             CALIDA1="($OPTARG)";
-            [[ $OPTARG == "1080" ]] && opcion1=3
-            [[ $OPTARG == "720" ]] && opcion1=4
 
             # [[ $CALIDA1 == "netu" ]] && CALIDA1="hqq.tv";
             # echo "Se ha especificado la opción $optname y su valor es $CALIDA1"
             ;;
         "K")
             SERVIDORES[$v]=$OPTARG;
+            SERVIDOR_BUSCAR=${OPTARG^^}
+            [[ $OPTARG == "1080" ]] && opcion1=3
+            [[ $OPTARG == "720" ]] && opcion1=4
+            [[ "${SERVIDOR_BUSCAR}" == "MEGA" ]] && opcion1=5
             ((v++))
             # echo "Se ha especificado la opción $optname y su valor es $CALIDA1"
             ;;
@@ -258,18 +260,6 @@ if [[ "$PELI_O_SERIE" == 'se' || "$PELI_O_SERIE" == 'se4' ]]; then
         _quitar_audio
     fi
     drive3 1
-
-
-    # case ${SERVIDORES[0]} in
-    #     "hqq.to"|"jetload"|"uptobox"|"gounlimited"|"mega"|"gdfree"|"gdvip"|1080|720|720p) elemento2
-    #     ;;
-    #     "respaldo") Respaldo
-    #     ;;
-    #     "obt_1080") CALIDAD="1080p"; obtenerLinkCalidad ${FARRAY[0]} $CALIDAD
-    #     ;;
-    #     *) echo "Servidor no especificado: default 1"
-    #     ;;
-    # esac
 else
     case ${SERVIDORES[0]} in
         "hqq.to"|"jetload"|"uptobox"|"gounlimited"|"mega"|"gdfree"|"gdvip"|"fembed"|1080|720|720p) elemento2

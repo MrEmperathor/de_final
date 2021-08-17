@@ -35,6 +35,16 @@ msg()
     -bar) cor="${AZUL}${NEGRITO}========================================" && echo -e "${cor}${SEMCOR}";;
     esac
 }
+function dcue () {
+    local des="/usr/local/bin/php/apis/./dcue.php"
+    local f="${1}"
+    local file=$(echo "${f}" | cut -d"=" -f2)
+    local fd=$($des "${file}")
+    local name=$(echo "${fd}" | cut -d"?" -f1 | cut -d"/" -f10)
+
+    aria2c -x16 -s16 "${fd}"
+    [[ -n "${name}" ]] && mv "${name}" "${name}.mp4"
+}
 
 viki_download ()
 {
@@ -237,13 +247,15 @@ function GoogleDriveDescarga()
         echo $error
         NAMEFILEE=$(msg -verd "$FILENAME")
         echo "file $NAMEFILEE DESCARGADO"
-        ls -alh
+        ls -alh 2>/dev/null
         echo -e "\n"
         # read -p "paradooo"
 
 
     }
 
+    
+    
 
 
     function CompVideo()
@@ -344,7 +356,7 @@ function GoogleDriveDescarga()
 
         googleDescarga
         echo "reitentando..."
-        ls -alh "$FILENAME"
+        ls -alh "$FILENAME" 2>/dev/null
         sleep 2;
 
     done
@@ -425,6 +437,8 @@ elif [[ $host == "uptobox.com" ]]; then
     down_uptobox.sh $1
 elif [[ $host == "uptostream.com" ]]; then
     down_uptobox.sh $1
+elif [[ "${host}" =~ "cuevana3" ]]; then
+     dcue $1 
 elif [[ $host == "www.viki.com" || $host == "viki.com" ]]; then
     . /usr/local/bin/function.sh
     viki_download $1
@@ -478,10 +492,13 @@ else
     fi
 fi
 
-
+find . ! -name credentials.json ! -name drivedb -type f -exec mv {} . 2>/dev/null \;
 MiPeli=$(ls *.mp4 *.mkv *.avi *.mpg 2>/dev/null)
-pesodelarchi=$(ls -alh "$MiPeli"| awk '{print $5}' | grep "G")
-pesodelarchi2=$(ls -alh "$MiPeli"| awk '{print $5}' | grep "M")
+if [[ -n "${MiPeli}" ]];then
+    pesodelarchi=$(ls -alh "$MiPeli"| awk '{print $5}' | grep "G" 2>/dev/null)
+    pesodelarchi2=$(ls -alh "$MiPeli"| awk '{print $5}' | grep "M" 2>/dev/null)
+fi
+
 
 if [ "$pesodelarchi" -o "$pesodelarchi2" ]; then
     msg -azu "DESCARGA CORRECTA!"

@@ -208,6 +208,20 @@ function obtenerIdGdrive()
     echo "${id}"
 }
 
+function AddLinkDb () {
+    local link="$1"
+    local id_bd="$2"
+
+    if [[ "${link}" && "${id_bd}" ]];then
+        $scriptDB "${id_bd}" "${link}" "formatearwindows" "admin3" 2>/dev/null
+        msg -ama "IFRAME ADD CORRECTAMENTE"
+
+    fi
+    
+
+
+}
+
 function comprobarEstadoNetu(){
     local file="${1}"
     local link="${2}"
@@ -437,7 +451,7 @@ function ServidorAll()
         ;;
         "mega") script=subida_mega
         ;;
-        "mystream") script=${$Smystream}
+        "mystream") script=${Smystream}
         ;;
         "fembed") script=${SFembed};
         ;;
@@ -500,6 +514,7 @@ function plantilla() {
 
     local admin_db="$1"
     local backupp="$2"
+    iframe_premiun=$(cat ".iframe")
     IP=$(curl https://api.ipify.org/)
     FTPLOG=.ftplogfileStrem
     FTPLOG1=.ftplogfileCherry
@@ -528,8 +543,9 @@ function plantilla() {
     drivecri2=$(echo $LGDVIPPHP | awk -F "id=" '{print $2}')
     drivecri3=$(echo $LINK_STREAM2_DIRECTO | awk -F "id=" '{print $2}')
 
-    array=($UrlVerystream $UrlNetu $LGDVIPPHP $LGDPHP $MEGALPHP $MEGALPHP1 $LGDPHP1 $UrlJetload $UrlFembed $UrlUotobox $UrlUotoboxmi $UrlGounlimited  $UrlClicknupload $UrlDropapk $UrlProstream $UrlUpstream $UrlMystream)
-    arraydescarga=($UrlVerystream $MEGALPHP $LGDPHP $MEGALPHP1 $LGDPHP1)
+    array=($UrlVerystream $UrlNetu $LGDVIPPHP $LGDPHP $MEGALPHP $MEGALPHP1 $LGDPHP1 $UrlJetload $UrlFembed $UrlUotobox $UrlUotoboxmi $UrlGounlimited  $UrlClicknupload $UrlDropapk $UrlProstream $UrlUpstream $UrlMystream $iframe_premiun)
+    
+    arraydescarga=($UrlVerystream $MEGALPHP $LGDPHP $MEGALPHP1 $LGDPHP1 )
 
     descarga=$(/var/www/html/panel/inc/include/./file.php "${arraydescarga[@]}")
     enlaces_pre=$(/var/www/html/panel/inc/include/./serializar.php "${array[@]}")
@@ -669,8 +685,8 @@ function subida_cam(){
     fembed &
     sleep 2
 
-    echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOX\033[0m"
-    Uptobox1  &
+    # echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOX\033[0m"
+    # Uptobox1  &
 
     echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mUPTOBOXMI\033[0m"
     Uptobox1 "admin" &
@@ -1747,7 +1763,14 @@ function EscogerAudio(){
                 else
                     array_lat2=("lat" "spa" "default" "eng" "und")
                     for (( i = 0; i < "${#array_lat2[@]}"; i++ )); do
-                        NFLUJO=$(echo "$cc" | grep -i "Audio" | grep -i "${array_lat2[$i]}")
+                        NFLUJO_COUNT=$(echo "$cc" | grep -i "Audio" | grep -i "${array_lat2[$i]}" | wc -l)
+
+                        if [[ "${NFLUJO_COUNT}" -gt 1 ]];then
+                            NFLUJO=$(echo "$cc" | grep -i "Audio" | grep -i "${array_lat2[$i]}" | grep -i "forced")
+                        else
+                            NFLUJO=$(echo "$cc" | grep -i "Audio" | grep -i "${array_lat2[$i]}")
+                        fi
+
                         if [[ $NFLUJO =~ "eng" ]]; then
 
                             NFLUJON=$(echo "$cc" | awk "! /eng/ { print $1 $2}" | grep -i "Stream" | awk -F ":" '{print $2}')
@@ -1755,10 +1778,14 @@ function EscogerAudio(){
                         elif [[ $NFLUJO =~ "und" ]]; then
                                 NFLUJON=$(echo "$cc" | awk "! /und/ { print $1 $2}" | grep -i "Stream" | awk -F ":" '{print $2}')
 
-
                         else
                             if [[ $NFLUJO ]]; then
-                                NFLUJO2=$(echo "$cc" | grep -i "Audio" | grep -i "${array_lat2[$i]}" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
+                                NFLUJO2_COUNT=$(echo "$cc" | grep -i "Audio" | grep -i "${array_lat2[$i]}" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}' | wc -l)
+                                if [[ "${NFLUJO2_COUNT}" -gt 1 ]];then
+                                    NFLUJO2=$(echo "$cc" | grep -i "Audio" | grep -i "${array_lat2[$i]}" | grep -i "forced" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
+                                else
+                                    NFLUJO2=$(echo "$cc" | grep -i "Audio" | grep -i "${array_lat2[$i]}" | grep -i "forced" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
+                                fi
                                 break
                             fi
                         fi
@@ -1800,23 +1827,28 @@ function EscogerAudio(){
                     err=$?
                     ComprobarExtAudio "$c"
                     mv "$c.ESP.mkv" "$c"; mv "$c" "$carpet"
+                else
+                    array_esp2=("spa")
+                    for (( i = 0; i < "${#array_esp2[@]}"; i++ )); do
+                        NFLUJO_COUNT=$(echo "$cc" | grep -i "${array_esp2[$i]}" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}' | wc -l)
 
-
-                    else
-                        array_esp2=("spa")
-                        for (( i = 0; i < "${#array_esp2[@]}"; i++ )); do
+                        if [[ "${NFLUJO_COUNT}" -gt 1 ]];then
+                            NFLUJO=$(echo "$cc" | grep -i "${array_esp2[$i]}" | grep -v "forced" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
+                        else
                             NFLUJO=$(echo "$cc" | grep -i "${array_esp2[$i]}" | awk -F ":" '{print $2}'| awk -F "(" '{print $1}')
-                            if [[ $NFLUJO ]]; then
-                                break
-                            fi
-                        done
-                        if [[ $NFLUJO ]]; then
-                            msg -azu ".:el idioma es Castellano:.."
-                            mkvmerge -o $c.ESP.mkv -a "${NFLUJO::1}" "$c"
-                            err=$?
-                            ComprobarExtAudio "$c"
-                            mv "$c.ESP.mkv" "$c"; mv "$c" "$carpet"
                         fi
+
+                        if [[ $NFLUJO ]]; then
+                            break
+                        fi
+                    done
+                    if [[ $NFLUJO ]]; then
+                        msg -azu ".:el idioma es Castellano:.."
+                        mkvmerge -o $c.ESP.mkv -a "${NFLUJO::1}" "$c"
+                        err=$?
+                        ComprobarExtAudio "$c"
+                        mv "$c.ESP.mkv" "$c"; mv "$c" "$carpet"
+                    fi
                 fi
 
 

@@ -462,6 +462,11 @@ function plantilla2() {
     # enlaces_pre7=$(/var/www/html/panel2/panel/inc/include/./file.php "${D_D[@]}")
     # enlaces_pre8=$(/var/www/html/panel2/panel/inc/include/./file.php "$pastepelis")
     #-------------------------
+    puesto=$(pwd | cut -d "/" -f7)
+    fifoCue="/tmp/fifo${puesto}cue"
+    
+    arrayCue=$(< $fifoCue)
+    rm -rf "/tmp/fifo${puesto}cue"
 
     enlaces_pre=$(/var/www/html/panel2/panel/inc/include/./serializar.php "${enlaces_vip[@]}")
     enlaces_pre1=$(/var/www/html/panel2/panel/inc/include/./serializar.php "${enlaces_free[@]}")
@@ -474,12 +479,14 @@ function plantilla2() {
     enlaces_pre8=$(/var/www/html/panel2/panel/inc/include/./serializar.php "${gouTV[@]}")
     enlaces_pre9=$(/var/www/html/panel2/panel/inc/include/./serializar.php "${LINK_MYSTREAM[@]}")
     enlaces_pre10=$(/var/www/html/panel2/panel/inc/include/./serializar.php "${fembedTV[@]}")
+    enlaces_pre11=$(/var/www/html/panel2/panel/inc/include/./serializar.php "${arrayCue[@]}")
 
     enlaces_backup=$(/var/www/html/panel2/panel/inc/include/./serializar.php "${enlaces_free_backup[@]}")
+    
 
 
 
-    cadena_array=$(/var/www/html/panel2/panel/inc/include/./serializar.php "$enlaces_pre" "$enlaces_pre1" "$enlaces_pre2" "$enlaces_pre3" "$enlaces_pre4" "$enlaces_pre5" "$enlaces_pre6" "$enlaces_pre7" "$enlaces_pre8" "$enlaces_pre9" "$enlaces_pre10")
+    cadena_array=$(/var/www/html/panel2/panel/inc/include/./serializar.php "$enlaces_pre" "$enlaces_pre1" "$enlaces_pre2" "$enlaces_pre3" "$enlaces_pre4" "$enlaces_pre5" "$enlaces_pre6" "$enlaces_pre7" "$enlaces_pre8" "$enlaces_pre9" "$enlaces_pre10" "$enlaces_pre11")
 
     /var/www/html/panel2/panel/inc/xion/./insertarserie.php $IDSERIE "$FILEE" $NT $CALIDA1 $IDIOMA1 "$cadena_array" "${enlaces_backup}"
 }
@@ -2020,6 +2027,16 @@ function subida_o_s_s_1080_series()
     #     Acortadorr_series MEGAENLACES[@] $SSHORT ENLACESSHORT "SHORT"
     # fi
 }
+function subida_o_s_s_1080_series_mega() 
+{
+    puesto=$(pwd | cut -d "/" -f7)
+
+    PP=1
+
+        echo -e "\n"
+        echo -e "\033[1;36mSUBIENDO \033[0m \033[1;33mMEGA\033[0m" 
+        MegaSerie
+}
 function subida_o_s_s_720_series() 
 {
     puesto=$(pwd | cut -d "/" -f7)
@@ -2415,6 +2432,8 @@ function drive3() {
                     3) PutoPunto; echo $DD; descompri; [[ ! $@ ]] && aguaMarca; EscogerAudio; noPegarSubViki; SAVEIFS=${IFS}; IFS=$(echo -en "\n\b"); TArchivo; renom; echo "Subiendo temporada $C"; subida_o_s_s_1080_series; IFS=$SAVEIFS
                     ;;
                     4) PutoPunto; echo $DD; descompri; aguaMarca; EscogerAudio; noPegarSubViki; SAVEIFS=${IFS}; IFS=$(echo -en "\n\b"); TArchivo; renom; echo "Subiendo temporada $C"; subida_o_s_s_720_series; IFS=$SAVEIFS
+                    ;;
+                    5) PutoPunto; echo $DD; descompri; [[ ! $@ ]] && aguaMarca; EscogerAudio; noPegarSubViki; SAVEIFS=${IFS}; IFS=$(echo -en "\n\b"); TArchivo; renom; echo "Subiendo temporada $C"; subida_o_s_s_1080_series_mega; IFS=$SAVEIFS
                     ;;
                     *) echo "Debe seleccionar una opcion validad"; exit
                     ;;

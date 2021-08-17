@@ -17,6 +17,7 @@ for ((i=0;i<=CAN_CURSO;i++));
 do
     # python /root/.coc/udemy-dl/udemy-dl.py "${URL_CURSO[$i]}" -u "emperador0003@gmail.com" -p "95072027460a"
     python /usr/local/udemy-dl-master/udemy-dl.py -k /usr/local/udemy-dl-master/cok "${URL_CURSO[$i]}"
+    read -p "TTERMINO LA DESCARGA"
 
 
     CARPETA_ENTRADA=$(ls -F | grep /)
